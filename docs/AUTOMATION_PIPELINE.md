@@ -1,0 +1,58 @@
+# 모하프 자동화 운영 안내
+
+## 처리 순서
+
+1. 자료 수집: 네이버 블로그·카페·뉴스, YouTube, Threads 검색, OpenAI 웹 검색을 서로 독립적으로 실행합니다.
+2. 정리: HTML과 추적 파라미터를 제거하고 원문 URL·제목 기준으로 중복을 제거합니다.
+3. 선별: 절약 연관성, 최신성, 출처 등급, 계산 가능한 숫자, 문제 구조를 점수화합니다.
+4. 근거 확인: SNS와 커뮤니티는 아이디어 신호로만 사용합니다. 수치 주장은 정부·공공기관 또는 원문 보도 근거가 있어야 합니다.
+5. 기획: Astra 품질 모델이 문제·근거·계산·실행·질문이 포함된 5~6장 기획안을 구조화 JSON으로 만듭니다.
+6. 품질 관문: 수집하지 않은 URL, 근거 없는 숫자, 4장 미만·7장 초과, 긴 문구, 실행 항목 부재, 낮은 품질 점수를 차단합니다.
+7. 렌더링: 1080×1350 PNG로 만들고 역할별 아이콘과 모하프 포즈를 배치합니다.
+8. 검토 대기열: 결과는 항상 `draft`로 들어갑니다. 승인 전에는 게시 후보가 되지 않습니다.
+9. 상품 동기화: 토스 승인 후 베스트 상품을 최대 1시간 캐시하고 상품별 추적 링크를 재사용합니다.
+10. 게시: 승인된 글만 GitHub 공개 이미지 주소로 올린 뒤 Threads 캐러셀로 게시합니다.
+11. 성과: 게시물별 조회·좋아요·답글·재게시·공유 지표를 저장합니다.
+
+## 실패 처리
+
+- 출처 하나가 실패해도 다른 출처 수집은 계속합니다.
+- 네이버·YouTube·OpenAI 키가 없으면 해당 출처만 건너뜁니다.
+- Threads 검색 HTTP 500은 `threads_keyword_search` 권한과 토큰 재동의를 우선 확인합니다.
+- 토스 HTTP 429·5xx·본문 오류 500만 지수 백오프로 재시도합니다.
+- 토스 `INVALID_ARGUMENT`, `ACCESS_DENIED`, `QUOTA_EXCEEDED`는 반복 호출하지 않고 원인 해결 또는 자정 이후 실행을 기다립니다.
+- 토스 `productUrl`은 절대 게시하지 않고 `shortUrl` 또는 `originUrl`만 저장합니다.
+- 상품 이미지는 사용 허가가 확인될 때까지 자동 저장·가공·게시하지 않습니다.
+
+## 승인 정책
+
+- 정보·공감·참여·제휴 모두 첫 운영 기간에는 사람이 최종 승인합니다.
+- 제휴 콘텐츠 비율은 20% 이하이며 제휴 글 사이 일반 글은 최소 3개입니다.
+- 가격은 게시 시각 기준 24시간 이내 확인값만 허용합니다.
+- 광고·수수료 고지는 캡션 첫 부분에 표시합니다.
+- 실게시에는 환경 잠금과 설정 잠금 두 개가 모두 해제되어야 합니다.
+
+## 데이터 위치
+
+- 비밀 키와 토스 액세스 토큰: `C:\Users\김관영\AppData\Local\MoharpAutomation`
+- 조사 결과: `data/research`
+- 토스 공개 상품·링크 캐시: `data/toss`
+- 게시 후보: `data/queue.json`
+- 거절된 구형 초안: `data/archive`
+- 렌더 결과: `public/generated/briefs`
+
+## 운영 명령
+
+```powershell
+npm run research:cycle
+npm run research:validate
+npm run toss:doctor
+npm run toss:sync
+npm test
+npm run typecheck
+npm run validate
+npm run start -- approve <게시물ID>
+npm run dry-run
+```
+
+Windows 예약 작업은 `MoharpThreadsAutomation`이며 매일 세 번 실행됩니다. 현재는 안전을 위해 비활성 상태입니다.

@@ -1,0 +1,39 @@
+{
+  "queries": [
+    "생활비 절약",
+    "자취 절약",
+    "무료배송 충동구매",
+    "쿠폰 과소비",
+    "대용량 생필품",
+    "소비기한 보관",
+    "냉장고 파먹기",
+    "1인가구 가성비",
+    "구독료 절약",
+    "전기요금 절약"
+  ],
+  "maxItemsPerQuery": 10,
+  "maxExcerptChars": 280,
+  "staleAfterDays": 30,
+  "minLeadScore": 45,
+  "maxLeadsPerRun": 150,
+  "primaryDomains": [
+    "data.go.kr",
+    "kosis.kr",
+    "foodsafetykorea.go.kr",
+    "fss.or.kr",
+    "kca.go.kr",
+    "price.go.kr",
+    "keco.or.kr",
+    "me.go.kr",
+    "motie.go.kr",
+    "korea.kr"
+  ],
+  "sources": {
+    "naverBlog": true,
+    "naverCafe": true,
+    "naverNews": true,
+    "youtube": true,
+    "threads": true,
+    "openaiWebSearch": true
+  }
+}

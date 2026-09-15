@@ -1,0 +1,2 @@
+id,name,category,affiliate_url,price,price_checked_at,active,notes
+sample-001,샘플 상품,생활용품,https://example.com/replace-with-toss-sharelink,0,2026-09-11T09:00:00+09:00,false,토스에서 발급한 실제 링크와 최신 가격으로 교체

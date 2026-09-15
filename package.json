@@ -1,0 +1,40 @@
+{
+  "name": "moharp-threads-automation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "하프하프 모하프 기반 자료조사·Threads·토스쇼핑 제휴 콘텐츠 자동화",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "tsx src/cli.ts",
+    "secrets:init": "tsx src/cli.ts init-secrets",
+    "research:doctor": "tsx src/cli.ts research-doctor",
+    "research:collect": "tsx src/cli.ts research-collect",
+    "research:cycle": "tsx src/cli.ts research-cycle",
+    "research:validate": "tsx src/cli.ts research-validate",
+    "research:report": "tsx src/cli.ts research-report",
+    "research:plan": "tsx src/cli.ts research-plan",
+    "toss:doctor": "tsx src/cli.ts toss-doctor",
+    "toss:sync": "tsx src/cli.ts toss-sync",
+    "validate": "tsx src/cli.ts validate",
+    "seed": "tsx src/cli.ts seed --days 30 --legacy",
+    "render": "tsx src/cli.ts render",
+    "dry-run": "tsx src/cli.ts run --dry-run --all-due",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "sharp": "^0.35.4"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitest": "^5.0.0"
+  }
+}

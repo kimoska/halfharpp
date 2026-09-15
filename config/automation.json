@@ -1,0 +1,10 @@
+{
+  "autoApproveNonAffiliate": false,
+  "affiliateRequiresApproval": true,
+  "defaultReplyControl": "everyone",
+  "renderWidth": 1080,
+  "renderQuality": 92,
+  "maxAttempts": 3,
+  "publishOnePerRun": true,
+  "dryRunByDefault": true
+}

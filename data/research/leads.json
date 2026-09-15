@@ -1,0 +1,61 @@
+[
+  {
+    "id": "official-price-intro",
+    "source": "official",
+    "query": "생활비 절약 가격 비교",
+    "title": "생필품 가격 비교로 생활비 절약하기: 참가격 제공 범위",
+    "excerpt": "한국소비자원 참가격은 생필품 가격을 격주 조사하고 판매점별 장바구니 가격 비교와 가격동향을 제공한다.",
+    "url": "https://www.price.go.kr/tprice/portal/pricenewsandtpriceintro/tpriceintro/getPriceIntro.do",
+    "canonicalUrl": "https://www.price.go.kr/tprice/portal/pricenewsandtpriceintro/tpriceintro/getPriceIntro.do",
+    "author": "한국소비자원 참가격",
+    "discoveredAt": "2026-09-15T10:35:00.000Z",
+    "sourceTier": 1,
+    "score": 65,
+    "scoreReasons": [
+      "절약 연관어 3개",
+      "게시일 미상",
+      "출처 등급 1",
+      "문제·질문 구조"
+    ],
+    "verification": "supported"
+  },
+  {
+    "id": "official-basket-compare",
+    "source": "official",
+    "query": "생필품 가격 비교",
+    "title": "장바구니 상품의 판매점별 가격 비교 방법",
+    "excerpt": "원하는 상품을 장바구니에 넣고 판매점을 선택해 판매점별 장바구니 가격을 비교할 수 있다.",
+    "url": "https://www.price.go.kr/tprice/portal/dailynecessitypriceinfo/shoppingbasketcomparison/getShoppingBasketView.do",
+    "canonicalUrl": "https://www.price.go.kr/tprice/portal/dailynecessitypriceinfo/shoppingbasketcomparison/getShoppingBasketView.do",
+    "author": "한국소비자원 참가격",
+    "discoveredAt": "2026-09-15T10:35:00.000Z",
+    "sourceTier": 1,
+    "score": 59,
+    "scoreReasons": [
+      "절약 연관어 1개",
+      "게시일 미상",
+      "출처 등급 1",
+      "문제·질문 구조"
+    ],
+    "verification": "supported"
+  },
+  {
+    "id": "official-food-date",
+    "source": "official",
+    "query": "소비기한 보관 절약",
+    "title": "소비기한과 식품 보관 기준 확인",
+    "excerpt": "표시된 보관방법을 지켜야 소비기한을 적용할 수 있으며 냉장·냉동·실온 기준을 확인해야 한다.",
+    "url": "https://www.foodsafetykorea.go.kr/portal/board/boardDetail.do?bbs_no=bbs001&menu_no=3120&ntctxt_no=1093173",
+    "canonicalUrl": "https://www.foodsafetykorea.go.kr/portal/board/boardDetail.do?bbs_no=bbs001&menu_no=3120&ntctxt_no=1093173",
+    "author": "식품안전나라",
+    "discoveredAt": "2026-09-15T10:35:00.000Z",
+    "sourceTier": 1,
+    "score": 59,
+    "scoreReasons": [
+      "절약 연관어 2개",
+      "게시일 미상",
+      "출처 등급 1"
+    ],
+    "verification": "supported"
+  }
+]

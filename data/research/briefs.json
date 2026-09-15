@@ -1,0 +1,78 @@
+[
+  {
+    "id": "basket-price-check-v1",
+    "pillar": "info",
+    "topic": "단품 최저가보다 장바구니 총액 비교",
+    "angle": "자주 사는 품목을 묶어 판매점별 총액을 확인하는 실제 행동",
+    "audienceProblem": "할인 상품 하나만 보고 매장을 골랐다가 나머지 품목에서 더 지출한다.",
+    "oneLineValue": "내가 실제로 살 장바구니 전체를 기준으로 비교하는 방법을 익힌다.",
+    "leadIds": ["official-price-intro", "official-basket-compare"],
+    "evidence": [
+      {
+        "title": "참가격 소개",
+        "url": "https://www.price.go.kr/tprice/portal/pricenewsandtpriceintro/tpriceintro/getPriceIntro.do",
+        "publisher": "한국소비자원 참가격",
+        "claim": "생필품 가격을 격주 조사하며 판매점별 장바구니 가격 비교 기능을 제공한다.",
+        "sourceTier": 1
+      },
+      {
+        "title": "장바구니 가격비교",
+        "url": "https://www.price.go.kr/tprice/portal/dailynecessitypriceinfo/shoppingbasketcomparison/getShoppingBasketView.do",
+        "publisher": "한국소비자원 참가격",
+        "claim": "원하는 상품을 담고 선택한 판매점들의 장바구니 가격을 비교할 수 있다.",
+        "sourceTier": 1
+      }
+    ],
+    "calculations": [],
+    "slides": [
+      {
+        "order": 1,
+        "role": "hook",
+        "headline": "싼 상품 하나 보고 장 보러 갔는데",
+        "body": "계산대 총액은 왜 생각보다 클까요? 단품 최저가와 내 장바구니 최저가는 다를 수 있어요.",
+        "visualDirection": "할인표를 들고 놀란 모하프"
+      },
+      {
+        "order": 2,
+        "role": "problem",
+        "headline": "비교 기준이 하나뿐이었어요",
+        "body": "눈에 띈 할인 상품만 비교하면 함께 사는 우유·세제·휴지의 가격 차이는 놓치기 쉬워요.",
+        "visualDirection": "한 상품만 확대해 보다가 주변 가격을 놓친 장면"
+      },
+      {
+        "order": 3,
+        "role": "evidence",
+        "headline": "공식 가격표로 묶어서 봐요",
+        "body": "한국소비자원 참가격은 생필품 가격을 격주 조사하고, 판매점별 장바구니 가격 비교 기능을 제공합니다.",
+        "visualDirection": "공식 자료를 확인하는 모하프와 장바구니 표"
+      },
+      {
+        "order": 4,
+        "role": "action",
+        "headline": "먼저 반복 구매품만 담기",
+        "body": "이번 주 꼭 살 품목만 적고 브랜드·용량을 맞추세요. 조건이 다르면 가격 비교가 흐려집니다.",
+        "visualDirection": "규격과 수량을 체크하는 목록"
+      },
+      {
+        "order": 5,
+        "role": "calculation",
+        "headline": "총액에 이동비도 더하기",
+        "body": "판매점별 장바구니 합계에 배송비나 교통비를 더해 실제 지출을 비교하세요. 가장 싼 단품보다 총액이 중요해요.",
+        "visualDirection": "장바구니 합계 더하기 배송비 계산식"
+      },
+      {
+        "order": 6,
+        "role": "question",
+        "headline": "다음 장보기 전에 한 번만",
+        "body": "자주 사는 품목을 묶어 비교해 보세요. 여러분은 장 볼 때 단품 가격과 총액 중 무엇을 먼저 보나요?",
+        "visualDirection": "장바구니를 들고 묻는 모하프"
+      }
+    ],
+    "caption": "할인 상품 하나가 싸다고 장바구니 전체도 싼 건 아니에요. 자주 사는 품목의 브랜드·용량을 맞춰 담고, 판매점별 합계에 배송비나 교통비까지 더해 비교해 보세요. 한국소비자원 참가격의 장바구니 가격비교 기능을 활용할 수 있습니다.",
+    "cta": "장 볼 때 단품 가격과 전체 총액 중 무엇을 먼저 보나요?",
+    "risks": ["실제 판매가격은 조사 시점과 할인 여부에 따라 달라질 수 있으므로 게시 시점에 다시 확인한다."],
+    "status": "draft",
+    "createdAt": "2026-09-15T10:40:00.000Z",
+    "updatedAt": "2026-09-15T10:40:00.000Z"
+  }
+]

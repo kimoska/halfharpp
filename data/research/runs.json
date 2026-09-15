@@ -1,0 +1,168 @@
+[
+  {
+    "id": "7c45639ed8dda7bc",
+    "startedAt": "2026-09-15T10:24:05.692Z",
+    "finishedAt": "2026-09-15T10:24:10.201Z",
+    "collected": 0,
+    "accepted": 0,
+    "duplicates": 0,
+    "diagnostics": [
+      {
+        "source": "naver_blog",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_cafe",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_news",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "youtube",
+        "status": "skipped",
+        "collected": 0,
+        "message": "YOUTUBE_API_KEY 없음"
+      },
+      {
+        "source": "threads",
+        "status": "failed",
+        "collected": 0,
+        "message": "HTTP 500: https://graph.threads.net/v1.0/keyword_search?q=%EC%83%9D%ED%99%9C%EB%B9%84+%EC%A0%88%EC%95%BD&search_type=RECENT&fields=id%2Ctext%2Ctimestamp%2Cusername%2Cpermalink&access_token=%5BREDACTED%5D"
+      }
+    ]
+  },
+  {
+    "id": "63e8387bfff82319",
+    "startedAt": "2026-09-15T10:28:09.833Z",
+    "finishedAt": "2026-09-15T10:28:13.593Z",
+    "collected": 0,
+    "accepted": 0,
+    "duplicates": 0,
+    "diagnostics": [
+      {
+        "source": "naver_blog",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_cafe",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_news",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "youtube",
+        "status": "skipped",
+        "collected": 0,
+        "message": "YOUTUBE_API_KEY 없음"
+      },
+      {
+        "source": "threads",
+        "status": "failed",
+        "collected": 0,
+        "message": "HTTP 500: https://graph.threads.net/keyword_search?q=%EC%83%9D%ED%99%9C%EB%B9%84+%EC%A0%88%EC%95%BD&search_type=RECENT&search_mode=KEYWORD&limit=10&fields=id%2Ctext%2Ctimestamp%2Cusername%2Cpermalink"
+      }
+    ]
+  },
+  {
+    "id": "2454b6b28b501e6e",
+    "startedAt": "2026-09-15T13:58:11.762Z",
+    "finishedAt": "2026-09-15T13:58:14.695Z",
+    "collected": 0,
+    "accepted": 0,
+    "duplicates": 0,
+    "diagnostics": [
+      {
+        "source": "naver_blog",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_cafe",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_news",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "youtube",
+        "status": "skipped",
+        "collected": 0,
+        "message": "YOUTUBE_API_KEY 없음"
+      },
+      {
+        "source": "threads",
+        "status": "failed",
+        "collected": 0,
+        "message": "HTTP 500: https://graph.threads.net/keyword_search?q=%EC%83%9D%ED%99%9C%EB%B9%84+%EC%A0%88%EC%95%BD&search_type=RECENT&search_mode=KEYWORD&limit=10&fields=id%2Ctext%2Ctimestamp%2Cusername%2Cpermalink · Meta 앱의 threads_keyword_search 권한 추가 후 토큰 재동의가 필요할 수 있습니다."
+      }
+    ]
+  },
+  {
+    "id": "a2470e92bfeb78e3",
+    "startedAt": "2026-09-15T14:07:10.599Z",
+    "finishedAt": "2026-09-15T14:07:13.159Z",
+    "collected": 0,
+    "accepted": 0,
+    "duplicates": 0,
+    "diagnostics": [
+      {
+        "source": "naver_blog",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_cafe",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_news",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "youtube",
+        "status": "skipped",
+        "collected": 0,
+        "message": "YOUTUBE_API_KEY 없음"
+      },
+      {
+        "source": "threads",
+        "status": "failed",
+        "collected": 0,
+        "message": "HTTP 500: https://graph.threads.net/keyword_search?q=%EC%83%9D%ED%99%9C%EB%B9%84+%EC%A0%88%EC%95%BD&search_type=RECENT&search_mode=KEYWORD&limit=10&fields=id%2Ctext%2Ctimestamp%2Cusername%2Cpermalink · Meta 앱의 threads_keyword_search 권한 추가 후 토큰 재동의가 필요할 수 있습니다."
+      },
+      {
+        "source": "openai_web",
+        "status": "skipped",
+        "collected": 0,
+        "message": "OPENAI_API_KEY 없음"
+      }
+    ]
+  }
+]

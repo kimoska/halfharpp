@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+data/queue.json.bak
+logs/*.log
+public/generated/*.png
+public/generated/**/*.png
+!public/generated/.gitkeep
+assets/malangpu/
+assets/moharp/card-concepts-v1/
+public/concepts/
+scripts/build-card-concepts.mjs
