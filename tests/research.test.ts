@@ -5,6 +5,7 @@ import { scoreLead } from "../src/research/score.js";
 import { collectConfiguredSources, isoFromNaverDate } from "../src/research/sources.js";
 import { fetchJson } from "../src/research/http.js";
 import { mergeAndRankLeads, validateBrief, validateLead } from "../src/research/pipeline.js";
+import type { Product } from "../src/types.js";
 
 const config: ResearchConfig = {
   queries: ["생활비 절약"],
@@ -123,5 +124,15 @@ describe("editorial gate", () => {
   it("blocks evidence URLs that were not in the collected research", () => {
     const lead = makeLead({ source: "official", query: "생활비 절약", title: "공식 가격 자료", url: "https://data.go.kr/source", sourceTier: 1, maxExcerptChars: 80 });
     expect(validateBrief(brief, [lead]).some((issue) => issue.code === "EVIDENCE_NOT_IN_RESEARCH")).toBe(true);
+  });
+
+  it("blocks an affiliate brief without an active linked product", () => {
+    const affiliate = { ...brief, pillar: "affiliate" as const, productId: "toss-123", risks: ["[광고] 제휴 수수료 고지를 본문 첫 줄에 표시"] };
+    expect(validateBrief(affiliate, undefined, []).some((issue) => issue.code === "AFFILIATE_PRODUCT_MISSING")).toBe(true);
+    const product: Product = {
+      id: "toss-123", tacaItemId: 123, name: "생활용품", category: "생활", affiliateUrl: "https://toss.im/_m/test",
+      price: 9900, priceCheckedAt: "2026-09-15T00:00:00Z", active: true, notes: "테스트"
+    };
+    expect(validateBrief(affiliate, undefined, [product]).some((issue) => issue.code === "AFFILIATE_PRODUCT_MISSING")).toBe(false);
   });
 });

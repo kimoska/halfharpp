@@ -19,6 +19,7 @@ import { collectConfiguredSources } from "./research/sources.js";
 import { makeResearchRun, mergeAndRankLeads, validateBrief, validateLead } from "./research/pipeline.js";
 import { generateEditorialBrief } from "./research/planner.js";
 import { renderEditorialBrief } from "./research/card-renderer.js";
+import { selectAffiliateProduct } from "./research/affiliate.js";
 import { TossSharelinkClient } from "./toss/client.js";
 import { syncTossProducts } from "./toss/sync.js";
 
@@ -267,12 +268,12 @@ async function researchPlan(args: string[]): Promise<void> {
 }
 
 async function researchRender(args: string[]): Promise<void> {
-  const [briefs, queue, leads] = await Promise.all([loadResearchBriefs(), loadQueue(), loadResearchLeads()]);
+  const [briefs, queue, leads, products] = await Promise.all([loadResearchBriefs(), loadQueue(), loadResearchLeads(), loadProducts()]);
   const requestedId = args[0];
   const selected = requestedId ? briefs.filter((brief) => brief.id === requestedId) : briefs;
   if (selected.length === 0) throw new Error(requestedId ? `기획안을 찾지 못했습니다: ${requestedId}` : "렌더링할 기획안이 없습니다.");
   for (const brief of selected) {
-    const issues = validateBrief(brief, leads).filter((issue) => issue.level === "error");
+    const issues = validateBrief(brief, leads, products).filter((issue) => issue.level === "error");
     if (issues.length) throw new Error(`${brief.id} 검증 실패: ${issues.map((issue) => issue.code).join(", ")}`);
     const outputs = await renderEditorialBrief(brief);
     const post = queue.find((item) => item.briefId === brief.id);
@@ -289,10 +290,10 @@ async function researchRender(args: string[]): Promise<void> {
 async function researchQueue(args: string[]): Promise<void> {
   const id = args[0];
   if (!id) throw new Error("대기열에 넣을 기획안 ID가 필요합니다.");
-  const [briefs, queue, brand, leads] = await Promise.all([loadResearchBriefs(), loadQueue(), loadBrand(), loadResearchLeads()]);
+  const [briefs, queue, brand, leads, products] = await Promise.all([loadResearchBriefs(), loadQueue(), loadBrand(), loadResearchLeads(), loadProducts()]);
   const brief = briefs.find((item) => item.id === id);
   if (!brief) throw new Error(`기획안을 찾지 못했습니다: ${id}`);
-  const issues = validateBrief(brief, leads).filter((issue) => issue.level === "error");
+  const issues = validateBrief(brief, leads, products).filter((issue) => issue.level === "error");
   if (issues.length) throw new Error(`기획안 검증 실패: ${issues.map((issue) => issue.code).join(", ")}`);
   if (queue.some((item) => item.briefId === id)) throw new Error("이미 게시 대기열에 들어간 기획안입니다.");
   const tomorrow = new Date(Date.now() + 86_400_000);
@@ -300,6 +301,7 @@ async function researchQueue(args: string[]): Promise<void> {
   const scheduledAt = parseArg(args, "--at", `${date}T${brand.postingTimes[0]}:00+09:00`)!;
   if (!Number.isFinite(Date.parse(scheduledAt))) throw new Error("--at 예약 시각이 올바르지 않습니다.");
   const now = new Date().toISOString();
+  const product = brief.pillar === "affiliate" ? products.find((item) => item.id === brief.productId && item.active) : undefined;
   const post: QueuePost = {
     id: `brief-${brief.id}`,
     briefId: brief.id,
@@ -309,13 +311,17 @@ async function researchQueue(args: string[]): Promise<void> {
     hook: brief.slides[0]?.headline ?? brief.topic,
     body: brief.caption,
     cta: brief.cta,
-    text: [brief.caption, "", brief.cta, "", brand.hashtags.map((tag) => `#${tag}`).join(" ")].join("\n").trim(),
+    text: "",
     template: "editorial-carousel-v1",
+    productId: brief.productId,
+    affiliateUrl: product?.affiliateUrl,
+    priceCheckedAt: product?.priceCheckedAt,
     requiresApproval: true,
     attempts: 0,
     createdAt: now,
     updatedAt: now
   };
+  post.text = [composeText(post, brand), "", brand.hashtags.map((tag) => `#${tag}`).join(" ")].join("\n").trim();
   const outputs = await renderEditorialBrief(brief);
   post.imagePaths = outputs.map((output) => path.relative(process.cwd(), output).replaceAll("\\", "/"));
   post.imagePath = post.imagePaths[0];
@@ -325,10 +331,10 @@ async function researchQueue(args: string[]): Promise<void> {
 
 async function researchCycle(): Promise<void> {
   await researchCollect();
-  const [config, leads, briefs] = await Promise.all([loadResearchConfig(), loadResearchLeads(), loadResearchBriefs()]);
+  const [config, leads, briefs, products, queue, brand] = await Promise.all([loadResearchConfig(), loadResearchLeads(), loadResearchBriefs(), loadProducts(), loadQueue(), loadBrand()]);
   const validationErrors = [
     ...leads.flatMap((lead) => validateLead(lead, config)),
-    ...briefs.flatMap((brief) => validateBrief(brief, leads))
+    ...briefs.flatMap((brief) => validateBrief(brief, leads, products))
   ].filter((issue) => issue.level === "error");
   if (validationErrors.length) throw new Error(`자료조사 검증 오류 ${validationErrors.length}개: ${validationErrors.slice(0, 5).map((issue) => issue.code).join(", ")}`);
   if (!process.env.OPENAI_API_KEY) {
@@ -345,8 +351,9 @@ async function researchCycle(): Promise<void> {
     console.log("- 기준 통과 소재가 3개 미만이라 자동 기획을 보류합니다.");
     return;
   }
-  const brief = await generateEditorialBrief(selected);
-  const issues = validateBrief(brief, leads).filter((issue) => issue.level === "error");
+  const product = selectAffiliateProduct(products, queue, brand);
+  const brief = await generateEditorialBrief(selected, new Date(), product);
+  const issues = validateBrief(brief, leads, products).filter((issue) => issue.level === "error");
   if (issues.length) throw new Error(`자동 기획 검증 실패: ${issues.map((issue) => issue.code).join(", ")}`);
   await saveResearchBriefs([brief, ...briefs].slice(0, 200));
   await researchQueue([brief.id]);
@@ -354,8 +361,8 @@ async function researchCycle(): Promise<void> {
 }
 
 async function researchValidate(): Promise<number> {
-  const [config, leads, briefs] = await Promise.all([loadResearchConfig(), loadResearchLeads(), loadResearchBriefs()]);
-  const issues = [...leads.flatMap((lead) => validateLead(lead, config)), ...briefs.flatMap((brief) => validateBrief(brief, leads))];
+  const [config, leads, briefs, products] = await Promise.all([loadResearchConfig(), loadResearchLeads(), loadResearchBriefs(), loadProducts()]);
+  const issues = [...leads.flatMap((lead) => validateLead(lead, config)), ...briefs.flatMap((brief) => validateBrief(brief, leads, products))];
   for (const issue of issues) console.log(`${issue.level === "error" ? "✗" : "!"} ${issue.code}${issue.id ? ` [${issue.id}]` : ""}: ${issue.message}`);
   if (issues.length === 0) console.log("✓ 자료와 기획안 검증 통과");
   console.log(`자료 ${leads.length}개 · 기획안 ${briefs.length}개 · 오류 ${issues.filter((issue) => issue.level === "error").length}개`);

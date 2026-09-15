@@ -3,7 +3,7 @@ import { hasHttpUrl, wrapKorean } from "../src/utils.js";
 
 describe("utils", () => {
   it("wraps Korean copy without losing text", () => {
-    const value = "말랑푸가 알려주는 오늘의 작고 유용한 생활 습관";
+    const value = "모하프가 알려주는 오늘의 작고 유용한 생활 습관";
     expect(wrapKorean(value, 10).join("")).toBe(value);
   });
 

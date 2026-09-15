@@ -53,8 +53,23 @@ export async function syncTossProducts(client = new TossSharelinkClient(), maxPr
     });
   }
   await writeJsonAtomic(paths.tossLinks, links);
-  const headers = ["id", "name", "category", "affiliate_url", "price", "price_checked_at", "active", "notes"];
-  const rows = products.map((product) => [product.id, product.name, product.category, product.affiliateUrl, product.price, product.priceCheckedAt, product.active, product.notes].map(csv).join(","));
+  const headers = ["id", "taca_item_id", "name", "category", "affiliate_url", "price", "original_price", "discount_rate", "review_score", "review_count", "rank", "price_checked_at", "active", "notes"];
+  const rows = products.map((product) => [
+    product.id,
+    product.tacaItemId ?? "",
+    product.name,
+    product.category,
+    product.affiliateUrl,
+    product.price,
+    product.originalPrice ?? "",
+    product.discountRate ?? "",
+    product.reviewScore ?? "",
+    product.reviewCount ?? "",
+    product.rank ?? "",
+    product.priceCheckedAt,
+    product.active,
+    product.notes
+  ].map(csv).join(","));
   const temp = `${paths.products}.${process.pid}.tmp`;
   await fs.writeFile(temp, `${headers.join(",")}\n${rows.join("\n")}${rows.length ? "\n" : ""}`, "utf8");
   await fs.rename(temp, paths.products);

@@ -1,4 +1,5 @@
 import type { EditorialBrief, ResearchLead } from "../research-types.js";
+import type { Product } from "../types.js";
 import { sha256 } from "../utils.js";
 
 function outputText(payload: unknown): string {
@@ -8,10 +9,10 @@ function outputText(payload: unknown): string {
   throw new Error("기획 API 응답에서 JSON 문안을 찾지 못했습니다.");
 }
 
-const briefSchema = {
+function makeBriefSchema(affiliate: boolean) { return {
   type: "object",
   properties: {
-    pillar: { type: "string", enum: ["info", "relatable", "community"] },
+    pillar: { type: "string", enum: affiliate ? ["affiliate"] : ["info", "relatable", "community"] },
     topic: { type: "string", maxLength: 60 },
     angle: { type: "string", maxLength: 120 },
     audienceProblem: { type: "string", maxLength: 160 },
@@ -23,7 +24,7 @@ const briefSchema = {
       label: { type: "string" }, formula: { type: "string" }, result: { type: "string" }, inputs: { type: "object", additionalProperties: { anyOf: [{ type: "number" }, { type: "string" }] } }
     }, required: ["label", "formula", "result", "inputs"], additionalProperties: false } },
     slides: { type: "array", minItems: 5, maxItems: 6, items: { type: "object", properties: {
-      order: { type: "integer" }, role: { type: "string", enum: ["hook", "problem", "evidence", "calculation", "action", "question"] }, headline: { type: "string", maxLength: 36 }, body: { type: "string", maxLength: 120 }, visualDirection: { type: "string", maxLength: 120 }
+      order: { type: "integer" }, role: { type: "string", enum: ["hook", "problem", "evidence", "calculation", "action", "question", "product"] }, headline: { type: "string", maxLength: 36 }, body: { type: "string", maxLength: 120 }, visualDirection: { type: "string", maxLength: 120 }
     }, required: ["order", "role", "headline", "body", "visualDirection"], additionalProperties: false } },
     caption: { type: "string", maxLength: 500 },
     cta: { type: "string", maxLength: 80 },
@@ -31,9 +32,9 @@ const briefSchema = {
   },
   required: ["pillar", "topic", "angle", "audienceProblem", "oneLineValue", "evidence", "calculations", "slides", "caption", "cta", "risks"],
   additionalProperties: false
-} as const;
+} as const; }
 
-export async function generateEditorialBrief(leads: ResearchLead[], now = new Date()): Promise<EditorialBrief> {
+export async function generateEditorialBrief(leads: ResearchLead[], now = new Date(), product?: Product): Promise<EditorialBrief> {
   const key = process.env.OPENAI_API_KEY;
   if (!key) throw new Error("OPENAI_API_KEY가 없어 기획안 생성을 실행할 수 없습니다.");
   if (leads.length === 0) throw new Error("기획에 사용할 소재가 없습니다.");
@@ -48,6 +49,18 @@ export async function generateEditorialBrief(leads: ResearchLead[], now = new Da
     publishedAt: lead.publishedAt,
     verification: lead.verification
   }));
+  const productBundle = product ? {
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    originalPrice: product.originalPrice,
+    discountRate: product.discountRate,
+    reviewScore: product.reviewScore,
+    reviewCount: product.reviewCount,
+    rank: product.rank,
+    priceCheckedAt: product.priceCheckedAt,
+    affiliateUrl: product.affiliateUrl
+  } : undefined;
   const response = await fetch("https://api.openai.com/v1/responses", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
@@ -56,10 +69,10 @@ export async function generateEditorialBrief(leads: ResearchLead[], now = new Da
       store: false,
       max_output_tokens: 5000,
       input: [
-        { role: "developer", content: `당신은 한국 생활비 절약 전문 편집자입니다. SNS 글은 문제를 발견하는 신호일 뿐 사실 근거가 아닙니다. 제공된 자료 밖의 숫자나 체험을 만들지 마세요. 원문 문장을 복사하지 말고 완전히 새로 구성하세요. 흔한 조언 대신 구체적인 문제, 계산, 실행 규칙을 만드세요. 하프물범 모하프는 쿠폰과 무료배송 앞에서 엉뚱한 실수를 하지만 계산으로 바로잡습니다. 결과는 5~6장 카드뉴스 한 편이어야 합니다.` },
-        { role: "user", content: `다음 수집 자료로 저장·공유할 가치가 있는 카드뉴스 기획안을 하나 만드세요. 1~2등급 근거가 없으면 숫자 주장을 만들지 말고 risks에 필요한 검증을 적으세요. 게시 기준일: ${now.toISOString()}\n자료:\n${JSON.stringify(sourceBundle)}` }
+        { role: "developer", content: `당신은 한국 생활비 절약 전문 편집자입니다. SNS 글은 문제를 발견하는 신호일 뿐 사실 근거가 아닙니다. 제공된 자료와 상품 스냅샷 밖의 숫자·효능·체험을 만들지 마세요. 원문 문장을 복사하지 말고 완전히 새로 구성하세요. 흔한 조언 대신 구체적인 문제, 계산, 실행 규칙을 만드세요. 하프물범 모하프는 쿠폰과 무료배송 앞에서 엉뚱한 실수를 하지만 계산으로 바로잡습니다. 결과는 5~6장 카드뉴스 한 편이어야 합니다.${product ? " 이 글은 제휴 콘텐츠이므로 누구에게 맞고 누구에게 불필요한지, 가격·옵션 재확인과 광고 고지 계획을 risks에 반드시 넣으세요." : ""}` },
+        { role: "user", content: `다음 수집 자료로 저장·공유할 가치가 있는 카드뉴스 기획안을 하나 만드세요. 1~2등급 근거가 없으면 일반 수치 주장을 만들지 말고 risks에 필요한 검증을 적으세요. 게시 기준일: ${now.toISOString()}\n자료:\n${JSON.stringify(sourceBundle)}\n상품 스냅샷:\n${JSON.stringify(productBundle ?? "없음")}` }
       ],
-      text: { format: { type: "json_schema", name: "moharp_editorial_brief", strict: true, schema: briefSchema } }
+      text: { format: { type: "json_schema", name: "moharp_editorial_brief", strict: true, schema: makeBriefSchema(Boolean(product)) } }
     })
   });
   const raw = await response.text();
@@ -71,9 +84,9 @@ export async function generateEditorialBrief(leads: ResearchLead[], now = new Da
     ...generated,
     id: sha256(`${generated.topic}|${stamp}`).slice(0, 18),
     leadIds: leads.map((lead) => lead.id),
-    status: hasEvidence ? "draft" : "needs_evidence",
+    productId: product?.id,
+    status: hasEvidence || product ? "draft" : "needs_evidence",
     createdAt: stamp,
     updatedAt: stamp
   };
 }
-

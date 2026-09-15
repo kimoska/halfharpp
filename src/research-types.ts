@@ -99,6 +99,7 @@ export interface EditorialBrief {
   audienceProblem: string;
   oneLineValue: string;
   leadIds: string[];
+  productId?: string;
   evidence: Evidence[];
   calculations: Calculation[];
   slides: CardSlide[];

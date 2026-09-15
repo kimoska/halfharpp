@@ -3,7 +3,7 @@ import { buildQueue } from "../src/scheduler.js";
 import type { AutomationConfig, BrandConfig, ContentSeed } from "../src/types.js";
 
 const brand: BrandConfig = {
-  name: "말랑푸", voice: "", characterRules: [], contentRatio: { info: 0.4, relatable: 0.3, community: 0.2, affiliate: 0.1 },
+  name: "하프하프 모하프", voice: "", characterRules: [], contentRatio: { info: 0.35, relatable: 0.25, community: 0.2, affiliate: 0.2 },
   postingTimes: ["08:10", "19:40"], timezone: "Asia/Seoul", maxPostsPerDay: 2, minNonAffiliateBetweenAffiliate: 3,
   priceMaxAgeHours: 24, disclosure: "[광고] 수수료를 제공받을 수 있습니다.", hashtags: []
 };

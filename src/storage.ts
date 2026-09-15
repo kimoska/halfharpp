@@ -37,8 +37,8 @@ function parseCsvLine(line: string): string[] {
   return values;
 }
 
-export async function loadProducts(): Promise<Product[]> {
-  const raw = (await fs.readFile(paths.products, "utf8")).replace(/^\uFEFF/, "").trim();
+export function parseProductsCsv(source: string): Product[] {
+  const raw = source.replace(/^\uFEFF/, "").trim();
   if (!raw) return [];
   const [headerLine, ...rows] = raw.split(/\r?\n/).filter(Boolean);
   const headers = parseCsvLine(headerLine!);
@@ -47,15 +47,25 @@ export async function loadProducts(): Promise<Product[]> {
     const item = Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ""]));
     return {
       id: item.id ?? "",
+      tacaItemId: item.taca_item_id ? Number(item.taca_item_id) : undefined,
       name: item.name ?? "",
       category: item.category ?? "",
       affiliateUrl: item.affiliate_url ?? "",
       price: Number(item.price || 0),
+      originalPrice: item.original_price ? Number(item.original_price) : undefined,
+      discountRate: item.discount_rate ? Number(item.discount_rate) : undefined,
+      reviewScore: item.review_score ? Number(item.review_score) : undefined,
+      reviewCount: item.review_count ? Number(item.review_count) : undefined,
+      rank: item.rank ? Number(item.rank) : undefined,
       priceCheckedAt: item.price_checked_at ?? "",
       active: (item.active ?? "").toLowerCase() === "true",
       notes: item.notes ?? ""
     };
   });
+}
+
+export async function loadProducts(): Promise<Product[]> {
+  return parseProductsCsv(await fs.readFile(paths.products, "utf8"));
 }
 
 export const loadBrand = () => readJson<BrandConfig>(paths.brand);

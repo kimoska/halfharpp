@@ -76,7 +76,7 @@ export function scoreBriefQuality(brief: EditorialBrief): number {
   return score;
 }
 
-export function validateBrief(brief: EditorialBrief, leads?: ResearchLead[]): ResearchValidationIssue[] {
+export function validateBrief(brief: EditorialBrief, leads?: ResearchLead[], products: import("../types.js").Product[] = []): ResearchValidationIssue[] {
   const issues: ResearchValidationIssue[] = [];
   if (brief.slides.length < 4 || brief.slides.length > 7) issues.push({ level: "error", code: "SLIDE_COUNT", message: "카드뉴스는 4~7장이어야 합니다.", id: brief.id });
   if (brief.slides.some((slide, index) => slide.order !== index + 1)) issues.push({ level: "error", code: "SLIDE_ORDER", message: "슬라이드 순번이 연속적이지 않습니다.", id: brief.id });
@@ -85,6 +85,10 @@ export function validateBrief(brief: EditorialBrief, leads?: ResearchLead[]): Re
   const makesFactualClaims = brief.calculations.length > 0 || brief.slides.some((slide) => /\d[\d,.]*\s*(원|%|개|g|kg|ml|l|일|개월|시간)/i.test(`${slide.headline} ${slide.body}`));
   if (makesFactualClaims && !brief.evidence.some((item) => item.sourceTier <= 2)) issues.push({ level: "error", code: "EVIDENCE_REQUIRED", message: "숫자·사실 주장을 뒷받침하는 1~2등급 근거가 없습니다.", id: brief.id });
   if (brief.pillar === "affiliate" && !brief.risks.some((risk) => /광고|제휴|수수료/.test(risk))) issues.push({ level: "error", code: "AFFILIATE_DISCLOSURE_PLAN_MISSING", message: "제휴 표시 계획이 없습니다.", id: brief.id });
+  if (brief.pillar === "affiliate") {
+    const product = products.find((item) => item.id === brief.productId && item.active);
+    if (!product) issues.push({ level: "error", code: "AFFILIATE_PRODUCT_MISSING", message: "활성 상품 스냅샷과 연결되지 않은 제휴 기획안입니다.", id: brief.id });
+  }
   if (!brief.oneLineValue.trim()) issues.push({ level: "error", code: "VALUE_EMPTY", message: "독자가 얻는 한 줄 가치가 없습니다.", id: brief.id });
   if (scoreBriefQuality(brief) < 75) issues.push({ level: "error", code: "BRIEF_QUALITY_LOW", message: "문제·근거·실행·질문의 기획 품질 점수가 75점 미만입니다.", id: brief.id });
   if (leads) {
