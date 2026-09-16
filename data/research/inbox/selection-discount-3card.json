@@ -1,0 +1,60 @@
+{
+  "id": "selection-discount-check-v1",
+  "pillar": "info",
+  "topic": "선택약정 25% 할인 대상 확인",
+  "angle": "휴대폰을 바꾸는 대신 현재 청구서와 가입 가능 여부부터 확인하는 고정비 점검",
+  "audienceProblem": "자급제폰이나 중고폰을 쓰거나 기존 약정이 끝났는데도 선택약정 할인 대상인지 몰라 통신비를 그대로 낸다.",
+  "oneLineValue": "청구서의 할인 항목과 가입 가능 여부, 해지 조건을 세 단계로 확인한다.",
+  "leadIds": [
+    "smartchoice-selection-discount",
+    "smartchoice-plan-compare"
+  ],
+  "evidence": [
+    {
+      "title": "지원금에 상응하는 25% 요금할인 안내",
+      "url": "https://m.smartchoice.or.kr/smc/service/danpageNew.do?type=m",
+      "publisher": "스마트초이스",
+      "claim": "지원금을 받지 않고 1년 또는 2년 선택약정을 신청하면 월 이동통신 요금의 25%를 할인받을 수 있다.",
+      "sourceTier": 2
+    },
+    {
+      "title": "스마트초이스 이동전화 요금제 비교",
+      "url": "https://www.smartchoice.or.kr/smc/plan/planCompare.do?type=m",
+      "publisher": "스마트초이스",
+      "claim": "선택약정 이용 중 해지하면 할인금액 일부를 반환하는 할인반환금이 발생할 수 있다.",
+      "sourceTier": 2
+    }
+  ],
+  "calculations": [],
+  "cardCountReason": "할인 가능성, 확인 순서, 해지 전 주의사항이라는 독립된 세 정보만 전달하면 완결되어 세 장을 사용한다.",
+  "slides": [
+    {
+      "order": 1,
+      "role": "hook",
+      "headline": "휴대폰 요금 25% 할인, 지금 받고 있나요?",
+      "body": "자급제폰·중고폰을 쓰거나 기존 약정이 끝났다면 선택약정 대상인지 확인해 볼 수 있어요.",
+      "visualDirection": "휴대폰 청구서를 보고 놀란 모하프"
+    },
+    {
+      "order": 2,
+      "role": "action",
+      "headline": "청구서부터 확인하세요",
+      "body": "선택약정 할인 항목이 있는지 보고, 없다면 스마트초이스나 통신사에서 가입 가능 여부를 조회하세요.",
+      "visualDirection": "청구서와 가입 가능 여부 두 칸 체크리스트"
+    },
+    {
+      "order": 3,
+      "role": "evidence",
+      "headline": "가입 전 해지 조건도 함께",
+      "body": "선택약정은 1년 또는 2년이며 월 이동통신 요금의 25%를 할인합니다. 중도 해지 시 할인반환금이 생길 수 있어요.",
+      "visualDirection": "할인율과 해지 조건을 함께 표시한 비교표"
+    }
+  ],
+  "caption": "휴대폰을 새로 사지 않아도 선택약정 할인 대상이 될 수 있습니다. 청구서에서 선택약정 할인 항목을 확인하고, 없다면 스마트초이스나 통신사에서 가입 가능 여부를 조회하세요. 가입 전에는 약정 기간과 중도 해지 시 할인반환금도 함께 확인해야 합니다.",
+  "cta": "지금 청구서에 선택약정 할인 항목이 있나요?",
+  "risks": [
+    "단말기 지원금 수령 여부와 현재 약정 상태에 따라 가입 가능 여부가 달라질 수 있으므로 개인별 조회를 안내한다.",
+    "월 청구액 전체가 아니라 할인 적용 대상 이동통신 요금을 기준으로 한다.",
+    "게시 전 스마트초이스 공식 안내에서 할인율과 약정 조건을 다시 확인한다."
+  ]
+}

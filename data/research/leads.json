@@ -1,5 +1,45 @@
 [
   {
+    "id": "smartchoice-selection-discount",
+    "source": "manual",
+    "query": "통신비 선택약정 할인",
+    "title": "지원금에 상응하는 25% 요금할인 안내",
+    "excerpt": "단말기 지원금을 받지 않고 1년 또는 2년 선택약정에 가입하면 월 이동통신 요금의 25%를 할인받을 수 있으며 자급제폰·중고폰·약정 종료 단말 이용자 등이 대상이 될 수 있다.",
+    "url": "https://m.smartchoice.or.kr/smc/service/danpageNew.do?type=m",
+    "canonicalUrl": "https://m.smartchoice.or.kr/smc/service/danpageNew.do?type=m",
+    "author": "스마트초이스",
+    "discoveredAt": "2026-09-16T06:00:00.000Z",
+    "sourceTier": 2,
+    "score": 68,
+    "scoreReasons": [
+      "통신비 절약 실행 정보",
+      "현재 공식 안내 확인",
+      "출처 등급 2",
+      "대상과 조건이 구체적"
+    ],
+    "verification": "supported"
+  },
+  {
+    "id": "smartchoice-plan-compare",
+    "source": "manual",
+    "query": "통신요금제 비교",
+    "title": "스마트초이스 이동전화 요금제 비교",
+    "excerpt": "요금제와 선택약정 할인 여부를 비교할 수 있으며 선택약정 이용 중 해지하면 할인금액 일부를 반환하는 할인반환금이 발생할 수 있다.",
+    "url": "https://www.smartchoice.or.kr/smc/plan/planCompare.do?type=m",
+    "canonicalUrl": "https://www.smartchoice.or.kr/smc/plan/planCompare.do?type=m",
+    "author": "스마트초이스",
+    "discoveredAt": "2026-09-16T06:00:00.000Z",
+    "sourceTier": 2,
+    "score": 64,
+    "scoreReasons": [
+      "요금제 비교 실행 정보",
+      "현재 공식 안내 확인",
+      "출처 등급 2",
+      "해지 조건 포함"
+    ],
+    "verification": "supported"
+  },
+  {
     "id": "official-price-intro",
     "source": "official",
     "query": "생활비 절약 가격 비교",

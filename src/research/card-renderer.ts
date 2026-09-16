@@ -47,7 +47,8 @@ function textLines(value: string, maxUnits: number, maxLines: number, x: number,
 function sourceLine(brief: EditorialBrief, slide: CardSlide): string {
   if (slide.role !== "evidence" || brief.evidence.length === 0) return "";
   const evidence = brief.evidence[0]!;
-  return `출처 · ${evidence.publisher} · ${evidence.title}`;
+  const more = brief.evidence.length > 1 ? ` 외 ${brief.evidence.length - 1}건` : "";
+  return `출처 · ${evidence.publisher} · ${evidence.title}${more}`;
 }
 
 function slideContent(brief: EditorialBrief, slide: CardSlide): string {

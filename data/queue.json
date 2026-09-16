@@ -34,5 +34,27 @@
     "publicImageUrl": "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/667a5c508c943b70-01.png",
     "threadsPostId": "18116461144780163",
     "permalink": "https://www.threads.com/@halfharpp/post/DdVEeZlk7ep"
+  },
+  {
+    "id": "brief-selection-discount-check-v1",
+    "briefId": "selection-discount-check-v1",
+    "pillar": "info",
+    "scheduledAt": "2026-09-17T08:10:00+09:00",
+    "status": "draft",
+    "hook": "휴대폰 요금 25% 할인, 지금 받고 있나요?",
+    "body": "휴대폰을 새로 사지 않아도 선택약정 할인 대상이 될 수 있습니다. 청구서에서 선택약정 할인 항목을 확인하고, 없다면 스마트초이스나 통신사에서 가입 가능 여부를 조회하세요. 가입 전에는 약정 기간과 중도 해지 시 할인반환금도 함께 확인해야 합니다.",
+    "cta": "지금 청구서에 선택약정 할인 항목이 있나요?",
+    "text": "휴대폰 요금 25% 할인, 지금 받고 있나요?\n\n휴대폰을 새로 사지 않아도 선택약정 할인 대상이 될 수 있습니다. 청구서에서 선택약정 할인 항목을 확인하고, 없다면 스마트초이스나 통신사에서 가입 가능 여부를 조회하세요. 가입 전에는 약정 기간과 중도 해지 시 할인반환금도 함께 확인해야 합니다.\n\n지금 청구서에 선택약정 할인 항목이 있나요?\n\n#모하프 #하프하프 #생활비절약",
+    "template": "editorial-carousel-v1",
+    "requiresApproval": true,
+    "attempts": 0,
+    "createdAt": "2026-09-16T13:37:49.347Z",
+    "updatedAt": "2026-09-16T13:38:40.938Z",
+    "imagePaths": [
+      "public/generated/briefs/selection-discount-check-v1/01.png",
+      "public/generated/briefs/selection-discount-check-v1/02.png",
+      "public/generated/briefs/selection-discount-check-v1/03.png"
+    ],
+    "imagePath": "public/generated/briefs/selection-discount-check-v1/01.png"
   }
 ]
