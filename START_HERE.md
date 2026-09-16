@@ -14,8 +14,8 @@
 사용자가 완료해야 하는 외부 항목:
 
 1. Meta 앱에 `threads_keyword_search` 권한을 추가하고 토큰을 다시 승인합니다.
-2. OpenAI API 키를 로컬 비밀 설정 파일에 넣습니다.
-3. 선택적으로 네이버 검색 API와 YouTube Data API 키를 넣습니다.
+2. Codex 구독형 콘텐츠 예약 작업을 사용합니다. OpenAI API 키와 추가 결제는 필요하지 않습니다.
+3. 선택적으로 무료 할당량 범위의 네이버 검색 API와 YouTube Data API 키를 넣습니다.
 4. 토스 쉐어링크 Open API 승인 후 Access Key, Secret Key, publisherId와 서버 출발지 IP를 설정합니다.
 5. 첫 카드뉴스와 캡션을 직접 확인해 승인합니다.
 
@@ -23,7 +23,7 @@
 
 ```powershell
 npm run research:doctor
-npm run research:cycle
+npm run research:collect
 npm run toss:doctor
 npm test
 npm run typecheck

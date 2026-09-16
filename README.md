@@ -16,7 +16,7 @@
 ```powershell
 npm install
 npm run secrets:init
-npm run research:cycle
+npm run research:collect
 npm run research:validate
 npm run toss:doctor
 npm test
@@ -24,15 +24,14 @@ npm run typecheck
 npm run validate
 ```
 
-`research:cycle`은 수집 → 중복 제거 → 점수화 → 근거 검사 → 기획 → 6장 렌더링 → 검토 대기열 등록 순서로 동작합니다. 외부 키가 없으면 가능한 단계까지만 완료하고 해당 출처를 건너뜁니다.
+자료조사·기획은 `docs/CODEX_CONTENT_RUNBOOK.md`에 따라 Codex 예약 작업이 현재 ChatGPT 구독의 포함 사용량으로 수행합니다. 별도 OpenAI API 키는 필요하지 않습니다. 결과는 검증 후 6장 카드뉴스와 `draft` 게시물로 저장됩니다.
 
 ## 주요 명령
 
 ```powershell
 npm run research:doctor
 npm run research:collect
-npm run research:cycle
-npm run research:plan
+npm run start -- research-ingest <기획안.json>
 npm run start -- research-render <기획안ID>
 npm run start -- research-queue <기획안ID>
 npm run toss:doctor
@@ -48,7 +47,7 @@ npm run start -- run
 
 `C:\Users\김관영\AppData\Local\MoharpAutomation\secrets.env`
 
-필요 항목은 Threads 토큰, GitHub 공개 이미지 저장소 토큰, OpenAI API 키, 선택적 네이버·YouTube 키, 승인 후 토스 Access Key·Secret Key·publisherId입니다.
+필요 항목은 Threads 토큰, GitHub 공개 이미지 저장소 토큰, 선택적 네이버·YouTube 키, 승인 후 토스 Access Key·Secret Key·publisherId입니다. OpenAI API 키는 사용하지 않습니다.
 
 ## 자동 실행
 
@@ -59,6 +58,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\enable-scheduled-task.ps1
 ```
 
 상세 구조와 장애 처리 방법은 [자동화 운영 안내](docs/AUTOMATION_PIPELINE.md)를 확인하세요.
+Codex가 콘텐츠를 만드는 절차는 [Codex 구독형 콘텐츠 제작 작업서](docs/CODEX_CONTENT_RUNBOOK.md)를 확인하세요.
 
 ## 파일 구조
 

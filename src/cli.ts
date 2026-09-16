@@ -9,10 +9,10 @@ import { renderPost } from "./renderer.js";
 import { enrichPost } from "./openai.js";
 import { makePublic } from "./media.js";
 import { ThreadsClient } from "./threads.js";
-import { parseArg } from "./utils.js";
+import { parseArg, sha256 } from "./utils.js";
 import { extractPosePack } from "./extract-poses.js";
 import type { QueuePost, ValidationIssue } from "./types.js";
-import type { ResearchLead } from "./research-types.js";
+import type { EditorialBrief, ResearchLead } from "./research-types.js";
 import { paths } from "./paths.js";
 import { makeLead } from "./research/normalize.js";
 import { collectConfiguredSources } from "./research/sources.js";
@@ -209,16 +209,15 @@ async function report(): Promise<void> {
 async function researchDoctor(): Promise<number> {
   const config = await loadResearchConfig();
   const checks = [
-    { ok: Boolean(process.env.NAVER_CLIENT_ID && process.env.NAVER_CLIENT_SECRET), message: "네이버 검색 API 키" },
-    { ok: Boolean(process.env.YOUTUBE_API_KEY), message: "YouTube Data API 키" },
-    { ok: Boolean(process.env.THREADS_ACCESS_TOKEN), message: "Threads 액세스 토큰" },
-    { ok: Boolean(process.env.OPENAI_API_KEY), message: "OpenAI 기획 API 키" },
-    { ok: config.queries.length >= 5, message: "검색어 5개 이상" },
-    { ok: config.primaryDomains.length >= 5, message: "공식 근거 도메인 5개 이상" }
+    { ok: Boolean(process.env.NAVER_CLIENT_ID && process.env.NAVER_CLIENT_SECRET), required: false, message: "네이버 검색 API 키(선택)" },
+    { ok: Boolean(process.env.YOUTUBE_API_KEY), required: false, message: "YouTube Data API 키(선택)" },
+    { ok: Boolean(process.env.THREADS_ACCESS_TOKEN), required: false, message: "Threads 토큰 등록(검색 권한은 별도 확인)" },
+    { ok: config.queries.length >= 5, required: true, message: "검색어 5개 이상" },
+    { ok: config.primaryDomains.length >= 5, required: true, message: "공식 근거 도메인 5개 이상" }
   ];
-  for (const check of checks) console.log(`${check.ok ? "✓" : "✗"} ${check.message}`);
+  for (const check of checks) console.log(`${check.ok ? "✓" : check.required ? "✗" : "-"} ${check.message}`);
   console.log("키가 없는 출처는 전체 실행을 중단시키지 않고 건너뜁니다.");
-  return checks.slice(4).every((check) => check.ok) ? 0 : 1;
+  return checks.filter((check) => check.required).every((check) => check.ok) ? 0 : 1;
 }
 
 async function researchCollect(): Promise<void> {
@@ -265,6 +264,44 @@ async function researchPlan(args: string[]): Promise<void> {
   if (issues.length) throw new Error(`생성된 기획안 검증 실패:\n${issues.map((issue) => `${issue.code}: ${issue.message}`).join("\n")}`);
   await saveResearchBriefs([brief, ...briefs].slice(0, 200));
   console.log(`✓ 기획안 생성·검증 완료: ${brief.id} / ${brief.topic} / ${brief.slides.length}장`);
+}
+
+async function researchIngest(args: string[]): Promise<void> {
+  const inputFile = args[0];
+  if (!inputFile) throw new Error("가져올 기획안 JSON 파일 경로가 필요합니다.");
+  const absolute = path.resolve(inputFile);
+  const input = await readJson<Partial<EditorialBrief>>(absolute);
+  if (!input.topic?.trim() || !input.pillar || !Array.isArray(input.leadIds) || !Array.isArray(input.evidence) || !Array.isArray(input.slides)) {
+    throw new Error("기획안에 topic, pillar, leadIds, evidence, slides가 필요합니다.");
+  }
+  const now = new Date().toISOString();
+  const brief: EditorialBrief = {
+    id: input.id || sha256(`${input.topic}|${now}`).slice(0, 18),
+    pillar: input.pillar,
+    topic: input.topic,
+    angle: input.angle ?? "",
+    audienceProblem: input.audienceProblem ?? "",
+    oneLineValue: input.oneLineValue ?? "",
+    leadIds: input.leadIds,
+    productId: input.productId,
+    evidence: input.evidence,
+    calculations: input.calculations ?? [],
+    slides: input.slides,
+    caption: input.caption ?? "",
+    cta: input.cta ?? "",
+    risks: input.risks ?? [],
+    status: "draft",
+    createdAt: input.createdAt || now,
+    updatedAt: now
+  };
+  const [briefs, leads, products] = await Promise.all([loadResearchBriefs(), loadResearchLeads(), loadProducts()]);
+  const normalizedTopic = brief.topic.replace(/\s+/g, "").toLowerCase();
+  if (briefs.some((item) => item.topic.replace(/\s+/g, "").toLowerCase() === normalizedTopic)) throw new Error("같은 주제의 기획안이 이미 있습니다.");
+  const issues = validateBrief(brief, leads, products).filter((issue) => issue.level === "error");
+  if (issues.length) throw new Error(`Codex 기획안 검증 실패:\n${issues.map((issue) => `${issue.code}: ${issue.message}`).join("\n")}`);
+  await saveResearchBriefs([brief, ...briefs].slice(0, 200));
+  await researchQueue([brief.id]);
+  console.log(`✓ Codex 구독 기획안 검증·렌더링·초안 등록 완료: ${brief.id}`);
 }
 
 async function researchRender(args: string[]): Promise<void> {
@@ -434,7 +471,7 @@ async function initSecrets(): Promise<void> {
 }
 
 function help(): void {
-  console.log(`모하프 Threads 자동화\n\n명령:\n  init-secrets\n  research-doctor\n  research-collect\n  research-cycle\n  research-import --url <주소> --title <제목> [--excerpt <요약>] [--tier 1|2]\n  research-plan [--leads 10]\n  research-render [기획안ID]\n  research-queue <기획안ID> [--at ISO시각]\n  research-validate\n  research-report\n  toss-doctor\n  toss-sync\n  validate\n  doctor\n  seed --days 30 --legacy\n  reseed --days 30 --legacy\n  sync-products\n  ai-enrich --limit 10\n  render [--all]\n  extract-poses\n  approve <게시물ID>\n  run [--dry-run] [--all-due]\n  insights\n  report`);
+  console.log(`모하프 Threads 자동화\n\n명령:\n  init-secrets\n  research-doctor\n  research-collect\n  research-cycle\n  research-import --url <주소> --title <제목> [--excerpt <요약>] [--tier 1|2]\n  research-ingest <기획안.json>\n  research-plan [--leads 10]\n  research-render [기획안ID]\n  research-queue <기획안ID> [--at ISO시각]\n  research-validate\n  research-report\n  toss-doctor\n  toss-sync\n  validate\n  doctor\n  seed --days 30 --legacy\n  reseed --days 30 --legacy\n  sync-products\n  ai-enrich --limit 10\n  render [--all]\n  extract-poses\n  approve <게시물ID>\n  run [--dry-run] [--all-due]\n  insights\n  report`);
 }
 
 async function main(): Promise<void> {
@@ -446,6 +483,7 @@ async function main(): Promise<void> {
     case "research-collect": await researchCollect(); break;
     case "research-cycle": await researchCycle(); break;
     case "research-import": await researchImport(args); break;
+    case "research-ingest": await researchIngest(args); break;
     case "research-plan": await researchPlan(args); break;
     case "research-render": await researchRender(args); break;
     case "research-queue": await researchQueue(args); break;

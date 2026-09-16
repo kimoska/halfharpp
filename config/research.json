@@ -34,6 +34,6 @@
     "naverNews": true,
     "youtube": true,
     "threads": true,
-    "openaiWebSearch": true
+    "openaiWebSearch": false
   }
 }

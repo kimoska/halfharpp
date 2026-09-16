@@ -1,0 +1,31 @@
+# Codex 구독형 콘텐츠 제작 작업서
+
+이 작업은 OpenAI API를 호출하지 않는다. 현재 Codex에 로그인된 ChatGPT 구독의 포함 사용량만 사용한다.
+
+## 매 실행 목표
+
+- 고품질 비제휴 카드뉴스 기획안 최대 1개를 만든다.
+- 결과는 반드시 `draft`로만 저장한다.
+- 동일하거나 실질적으로 비슷한 주제가 있으면 새로 만들지 않는다.
+- 기준을 통과할 소재가 없으면 억지로 만들지 않고 조용히 종료한다.
+
+## 실행 순서
+
+1. `config/brand.json`, `config/research.json`, `data/research/leads.json`, `data/research/briefs.json`, `data/queue.json`을 읽는다.
+2. `npm run research:collect`를 실행한다. 개별 출처 실패는 기록만 확인하고 계속한다.
+3. 웹에서 최근 30일 이내 생활비·절약 관련 이용자 고민을 찾아 아이디어 신호로 사용한다. Threads·Instagram·YouTube·블로그·카페·커뮤니티·뉴스를 폭넓게 살피되, SNS 문장을 사실 근거로 취급하지 않는다.
+4. 숫자·가격·보관·안전·제도 주장은 정부·공공기관·원문 보도 등 1~2등급 출처로 다시 확인한다.
+5. 필요한 근거는 `npm run start -- research-import --url <URL> --title <제목> --excerpt <짧은 요약> --tier 1|2`로 등록한다. 원문을 길게 복사하지 않는다.
+6. 기존 기획과 겹치지 않는 구체적인 문제 하나를 고른다. 흔한 절약 문구 대신 비교표·계산·판단 기준·실행 규칙 중 하나 이상을 포함한다.
+7. `EditorialBrief` 형식의 JSON 한 건을 `data/research/inbox/`에 만든다. 5~6장으로 구성하며 hook, problem, evidence, calculation 또는 action, question 역할을 최소 4종 포함한다.
+8. 모든 evidence URL은 방금 또는 기존에 등록된 lead의 canonicalUrl과 정확히 같아야 하고, `leadIds`에도 그 lead ID가 들어가야 한다.
+9. 캐릭터는 다리 없이 둥근 앞지느러미 두 개, 양 볼에 조금 긴 수염 두 가닥씩, 조개모자와 초록 미역 목도리를 지킨다.
+10. `npm run start -- research-ingest <JSON 경로>`를 실행한다. 이 명령이 근거·품질·중복을 검증하고 6장 이미지를 렌더링해 검토 대기열에 넣는다.
+11. `npm test`, `npm run typecheck`, `npm run research:validate`, `npm run validate`를 실행한다. 하나라도 실패하면 원인을 고치고 다시 검사한다.
+12. 실제 게시 승인, 실게시 잠금 해제, 예약 작업 활성화는 하지 않는다.
+
+## 비용·한도 원칙
+
+- `OPENAI_API_KEY`를 요구하거나 사용하지 않는다.
+- 유료 API, 유료 검색 서비스, 추가 크레딧 구매를 제안하지 않는다.
+- 구독 사용 한도에 도달하면 실패 원인을 기록하고 다음 예약 실행에서 다시 시도한다.
