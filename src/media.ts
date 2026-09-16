@@ -31,11 +31,19 @@ export async function makePublic(imagePath: string): Promise<string> {
   const existing = await fetch(`${api}?ref=${encodeURIComponent(branch)}`, { headers });
   if (existing.ok) return `https://raw.githubusercontent.com/${repo}/${encodeURIComponent(branch)}/${target.split("/").map(encodeURIComponent).join("/")}`;
   if (existing.status !== 404) throw new Error(`GitHub 이미지 확인 실패(${existing.status})`);
-  const response = await fetch(api, {
+  let response = await fetch(api, {
     method: "PUT",
     headers: { ...headers, "Content-Type": "application/json" },
     body: JSON.stringify({ message: `Add rendered Moharp post ${fileName}`, content, branch })
   });
+  if (response.status === 409) {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    response = await fetch(api, {
+      method: "PUT",
+      headers: { ...headers, "Content-Type": "application/json" },
+      body: JSON.stringify({ message: `Add rendered Moharp post ${fileName}`, content, branch })
+    });
+  }
   if (!response.ok) throw new Error(`GitHub 이미지 업로드 실패(${response.status}): ${await response.text()}`);
   return `https://raw.githubusercontent.com/${repo}/${encodeURIComponent(branch)}/${target.split("/").map(encodeURIComponent).join("/")}`;
 }

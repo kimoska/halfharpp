@@ -169,7 +169,11 @@ async function run(args: string[]): Promise<void> {
         continue;
       }
       if (post.imagePaths?.length) {
-        post.publicImageUrls ||= await Promise.all(post.imagePaths.map((item) => makePublic(path.resolve(item))));
+        if (!post.publicImageUrls?.length) {
+          const urls: string[] = [];
+          for (const item of post.imagePaths) urls.push(await makePublic(path.resolve(item)));
+          post.publicImageUrls = urls;
+        }
         post.publicImageUrl ||= post.publicImageUrls[0];
       } else {
         post.publicImageUrl ||= await makePublic(path.resolve(post.imagePath!));

@@ -34,4 +34,20 @@ describe("public media", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0]![0]).toContain("?ref=main");
   });
+
+  it("retries a GitHub branch-head conflict once", async () => {
+    process.env.GITHUB_MEDIA_REPO = "owner/repo";
+    process.env.GITHUB_MEDIA_TOKEN = "token";
+    const file = path.join(paths.generated, `media-conflict-${crypto.randomUUID()}.png`);
+    created.push(file);
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.writeFile(file, Buffer.from("image bytes"));
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response("{}", { status: 404 }))
+      .mockResolvedValueOnce(new Response("conflict", { status: 409 }))
+      .mockResolvedValueOnce(new Response("{}", { status: 201 }));
+    vi.stubGlobal("fetch", fetchMock);
+    await expect(makePublic(file)).resolves.toContain("raw.githubusercontent.com/owner/repo/main/");
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
 });

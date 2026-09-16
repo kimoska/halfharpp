@@ -4,16 +4,16 @@
     "briefId": "basket-price-check-v1",
     "pillar": "info",
     "scheduledAt": "2026-09-16T08:10:00+09:00",
-    "status": "draft",
+    "status": "published",
     "hook": "싼 상품 하나 보고 장 보러 갔는데",
     "body": "할인 상품 하나가 싸다고 장바구니 전체도 싼 건 아니에요. 자주 사는 품목의 브랜드·용량을 맞춰 담고, 판매점별 합계에 배송비나 교통비까지 더해 비교해 보세요. 한국소비자원 참가격의 장바구니 가격비교 기능을 활용할 수 있습니다.",
     "cta": "장 볼 때 단품 가격과 전체 총액 중 무엇을 먼저 보나요?",
     "text": "할인 상품 하나가 싸다고 장바구니 전체도 싼 건 아니에요. 자주 사는 품목의 브랜드·용량을 맞춰 담고, 판매점별 합계에 배송비나 교통비까지 더해 비교해 보세요. 한국소비자원 참가격의 장바구니 가격비교 기능을 활용할 수 있습니다.\n\n장 볼 때 단품 가격과 전체 총액 중 무엇을 먼저 보나요?\n\n#모하프 #하프하프 #생활비절약",
     "template": "editorial-carousel-v1",
     "requiresApproval": true,
-    "attempts": 0,
+    "attempts": 1,
     "createdAt": "2026-09-15T10:35:07.421Z",
-    "updatedAt": "2026-09-15T13:55:57.120Z",
+    "updatedAt": "2026-09-16T01:08:29.257Z",
     "imagePaths": [
       "public/generated/briefs/basket-price-check-v1/01.png",
       "public/generated/briefs/basket-price-check-v1/02.png",
@@ -22,6 +22,17 @@
       "public/generated/briefs/basket-price-check-v1/05.png",
       "public/generated/briefs/basket-price-check-v1/06.png"
     ],
-    "imagePath": "public/generated/briefs/basket-price-check-v1/01.png"
+    "imagePath": "public/generated/briefs/basket-price-check-v1/01.png",
+    "publicImageUrls": [
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/667a5c508c943b70-01.png",
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/f77d544f6769fe27-02.png",
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/1a3ac8ff72bd40ff-03.png",
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/f0cb7a820b2694d9-04.png",
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/43bff58707cb96e7-05.png",
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/24bc1ac491ae14a8-06.png"
+    ],
+    "publicImageUrl": "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/667a5c508c943b70-01.png",
+    "threadsPostId": "18116461144780163",
+    "permalink": "https://www.threads.com/@halfharpp/post/DdVEeZlk7ep"
   }
 ]
