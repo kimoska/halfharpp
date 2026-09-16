@@ -314,19 +314,21 @@ async function researchRender(args: string[]): Promise<void> {
   const requestedId = args[0];
   const selected = requestedId ? briefs.filter((brief) => brief.id === requestedId) : briefs;
   if (selected.length === 0) throw new Error(requestedId ? `기획안을 찾지 못했습니다: ${requestedId}` : "렌더링할 기획안이 없습니다.");
+  let queueChanged = false;
   for (const brief of selected) {
     const issues = validateBrief(brief, leads, products).filter((issue) => issue.level === "error");
     if (issues.length) throw new Error(`${brief.id} 검증 실패: ${issues.map((issue) => issue.code).join(", ")}`);
     const outputs = await renderEditorialBrief(brief);
     const post = queue.find((item) => item.briefId === brief.id);
-    if (post) {
+    if (post && post.status !== "published") {
       post.imagePaths = outputs.map((output) => path.relative(process.cwd(), output).replaceAll("\\", "/"));
       post.imagePath = post.imagePaths[0];
       post.updatedAt = new Date().toISOString();
+      queueChanged = true;
     }
     console.log(`✓ 카드뉴스 렌더링: ${brief.id} / ${outputs.length}장`);
   }
-  await saveQueue(queue);
+  if (queueChanged) await saveQueue(queue);
 }
 
 async function researchQueue(args: string[]): Promise<void> {

@@ -50,8 +50,40 @@ function sourceLine(brief: EditorialBrief, slide: CardSlide): string {
   return `출처 · ${evidence.publisher} · ${evidence.title}`;
 }
 
-function slideSvg(brief: EditorialBrief, slide: CardSlide): Buffer {
+function slideContent(brief: EditorialBrief, slide: CardSlide): string {
   const source = sourceLine(brief, slide);
+  if (slide.role === "hook") return `
+    ${textLines(slide.headline, 13, 3, 120, 320, 72, 92, 800, "#49372A")}
+    <rect x="120" y="610" width="600" height="268" rx="34" fill="#EAF2D9"/>
+    ${textLines(slide.body, 17, 5, 164, 676, 35, 54, 600, "#3F5333")}
+    <circle cx="850" cy="700" r="126" fill="#F6DFA8" opacity=".72"/>
+    <text x="850" y="741" text-anchor="middle" font-family="Malgun Gothic, sans-serif" font-size="108" font-weight="900" fill="#C98B52">?</text>`;
+  if (slide.role === "evidence") return `
+    ${textLines(slide.headline, 15, 2, 120, 292, 60, 78, 800, "#49372A")}
+    <rect x="120" y="440" width="840" height="300" rx="36" fill="#F5F0E8"/>
+    ${textLines(slide.body, 21, 5, 164, 515, 34, 55, 500, "#514B43")}
+    <rect x="120" y="790" width="840" height="138" rx="28" fill="#EAF2D9" stroke="#A9BE86" stroke-width="3"/>
+    <text x="154" y="836" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="800" fill="#55733F">확인한 원문</text>
+    ${textLines(source || "등록된 근거 자료", 44, 2, 154, 878, 23, 32, 500, "#675E55")}`;
+  if (["calculation", "action", "product"].includes(slide.role)) return `
+    ${textLines(slide.headline, 15, 2, 120, 292, 60, 78, 800, "#49372A")}
+    <rect x="120" y="455" width="548" height="410" rx="38" fill="#FFF7E6" stroke="#E8D7BD" stroke-width="3"/>
+    ${textLines(slide.body, 14, 7, 164, 530, 34, 53, 500, "#514B43")}
+    ${roleGraphic(slide.role)}`;
+  if (slide.role === "question") return `
+    ${textLines(slide.headline, 14, 3, 120, 310, 66, 84, 800, "#49372A")}
+    <path d="M120 570h650a34 34 0 0 1 34 34v205a34 34 0 0 1-34 34H360l-88 76 18-76H154a34 34 0 0 1-34-34z" fill="#EAF2D9" stroke="#A9BE86" stroke-width="4"/>
+    ${textLines(slide.body, 17, 5, 166, 644, 34, 54, 600, "#3F5333")}
+    <circle cx="878" cy="690" r="86" fill="#F6DFA8"/>
+    <text x="878" y="728" text-anchor="middle" font-family="Malgun Gothic, sans-serif" font-size="102" font-weight="900" fill="#C98B52">?</text>`;
+  return `
+    ${textLines(slide.headline, 14, 3, 120, 285, 64, 82, 800, "#49372A")}
+    <line x1="120" y1="525" x2="960" y2="525" stroke="#E8D7BD" stroke-width="3"/>
+    ${textLines(slide.body, 24, 6, 120, 610, 37, 59, 500, "#514B43")}
+    ${roleGraphic(slide.role)}`;
+}
+
+function slideSvg(brief: EditorialBrief, slide: CardSlide): Buffer {
   const progress = `${slide.order} / ${brief.slides.length}`;
   const svg = `<svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
     <rect width="1080" height="1350" fill="#FFF9EB"/>
@@ -61,20 +93,23 @@ function slideSvg(brief: EditorialBrief, slide: CardSlide): Buffer {
     <rect x="118" y="128" width="${Math.max(210, roleLabels[slide.role].length * 30)}" height="58" rx="29" fill="#EAF2D9"/>
     <text x="145" y="168" font-family="Malgun Gothic, Noto Sans KR, sans-serif" font-size="27" font-weight="700" fill="#55733F">${escapeXml(roleLabels[slide.role])}</text>
     <text x="914" y="168" text-anchor="end" font-family="Malgun Gothic, sans-serif" font-size="25" font-weight="700" fill="#9B7A5E">${progress}</text>
-    ${textLines(slide.headline, 14, 3, 120, 285, 64, 82, 800, "#49372A")}
-    <line x1="120" y1="525" x2="960" y2="525" stroke="#E8D7BD" stroke-width="3"/>
-    ${textLines(slide.body, 24, 6, 120, 610, 37, 59, 500, "#514B43")}
-    ${roleGraphic(slide.role)}
-    ${source ? `<rect x="120" y="1008" width="840" height="88" rx="22" fill="#F5F0E8"/>${textLines(source, 42, 2, 148, 1046, 22, 31, 500, "#786A5D")}` : ""}
+    ${slideContent(brief, slide)}
     <text x="120" y="1208" font-family="Malgun Gothic, sans-serif" font-size="27" font-weight="800" fill="#55733F">하프하프 모하프</text>
     <text x="120" y="1244" font-family="Malgun Gothic, sans-serif" font-size="20" font-weight="500" fill="#9B7A5E">모으고 아끼는 생활비 연구소</text>
   </svg>`;
   return Buffer.from(svg);
 }
 
-const whiskers = Buffer.from(`<svg width="260" height="260" xmlns="http://www.w3.org/2000/svg">
+function whiskers(size: number): Buffer { return Buffer.from(`<svg width="${size}" height="${size}" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
   <path d="M48 132 Q63 128 79 132 M51 146 Q66 140 81 143 M181 132 Q197 128 212 132 M179 143 Q194 140 209 146" fill="none" stroke="#9A633D" stroke-width="3.5" stroke-linecap="round"/>
-</svg>`);
+</svg>`); }
+
+function posePlacement(role: CardSlide["role"]): { size: number; left: number; top: number } {
+  if (role === "hook") return { size: 330, left: 680, top: 900 };
+  if (role === "question") return { size: 300, left: 704, top: 922 };
+  if (role === "evidence") return { size: 236, left: 774, top: 1000 };
+  return { size: 260, left: 744, top: 1020 };
+}
 
 export async function renderEditorialBrief(brief: EditorialBrief): Promise<string[]> {
   const outputDir = path.join(paths.generated, "briefs", brief.id);
@@ -82,11 +117,12 @@ export async function renderEditorialBrief(brief: EditorialBrief): Promise<strin
   const outputs: string[] = [];
   for (const slide of brief.slides) {
     const posePath = path.join(paths.assets, "poses-v1", poseByRole[slide.role]);
-    const resizedPose = await sharp(posePath).resize({ width: 260, height: 260, fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
-    const pose = await sharp(resizedPose).composite([{ input: whiskers }]).png().toBuffer();
+    const placement = posePlacement(slide.role);
+    const resizedPose = await sharp(posePath).resize({ width: placement.size, height: placement.size, fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer();
+    const pose = await sharp(resizedPose).composite([{ input: whiskers(placement.size) }]).png().toBuffer();
     const output = path.join(outputDir, `${String(slide.order).padStart(2, "0")}.png`);
     await sharp({ create: { width: WIDTH, height: HEIGHT, channels: 4, background: "#FFF9EB" } })
-      .composite([{ input: slideSvg(brief, slide) }, { input: pose, left: 744, top: 1020 }])
+      .composite([{ input: slideSvg(brief, slide) }, { input: pose, left: placement.left, top: placement.top }])
       .png({ compressionLevel: 9, quality: 95 })
       .toFile(output);
     outputs.push(output);
