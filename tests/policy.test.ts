@@ -42,4 +42,10 @@ describe("affiliate safeguards", () => {
   it("detects duplicate copy", () => {
     expect(validateDuplicates([post({ id: "a" }), post({ id: "b" })])[0]?.code).toBe("DUPLICATE_COPY");
   });
+
+  it("allows a single image post and up to ten carousel cards", () => {
+    expect(validatePost(post({ imagePaths: ["one.png"] }), brand)).toHaveLength(0);
+    expect(validatePost(post({ imagePaths: Array.from({ length: 10 }, (_, index) => `${index + 1}.png`) }), brand)).toHaveLength(0);
+    expect(validatePost(post({ imagePaths: Array.from({ length: 11 }, (_, index) => `${index + 1}.png`) }), brand).some((issue) => issue.code === "MEDIA_COUNT")).toBe(true);
+  });
 });

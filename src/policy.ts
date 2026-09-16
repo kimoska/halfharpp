@@ -27,7 +27,7 @@ export function validatePost(post: QueuePost, brand: BrandConfig, now = new Date
   if (!post.text.trim()) issues.push({ level: "error", code: "EMPTY_TEXT", message: "본문이 비어 있습니다.", postId: post.id });
   if (post.text.length > 500) issues.push({ level: "error", code: "TEXT_TOO_LONG", message: `본문이 500자를 넘습니다(${post.text.length}자).`, postId: post.id });
   if (!Number.isFinite(Date.parse(post.scheduledAt))) issues.push({ level: "error", code: "DATE_INVALID", message: "예약 시각이 올바르지 않습니다.", postId: post.id });
-  if (post.imagePaths && (post.imagePaths.length < 2 || post.imagePaths.length > 10)) issues.push({ level: "error", code: "CAROUSEL_SIZE", message: "캐러셀 이미지는 2~10장이어야 합니다.", postId: post.id });
+  if (post.imagePaths && (post.imagePaths.length < 1 || post.imagePaths.length > 10)) issues.push({ level: "error", code: "MEDIA_COUNT", message: "게시 이미지는 1~10장이어야 합니다.", postId: post.id });
   if (post.pillar === "affiliate") {
     if (!post.text.includes("[광고]") || !post.text.includes("수수료")) issues.push({ level: "error", code: "DISCLOSURE_MISSING", message: "광고·수수료 고지가 없습니다.", postId: post.id });
     if (!hasHttpUrl(post.affiliateUrl) || post.affiliateUrl?.includes("example.com")) issues.push({ level: "error", code: "AFFILIATE_LINK_INVALID", message: "실제 제휴 링크가 없습니다.", postId: post.id });

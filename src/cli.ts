@@ -275,8 +275,8 @@ async function researchIngest(args: string[]): Promise<void> {
   if (!inputFile) throw new Error("가져올 기획안 JSON 파일 경로가 필요합니다.");
   const absolute = path.resolve(inputFile);
   const input = await readJson<Partial<EditorialBrief>>(absolute);
-  if (!input.topic?.trim() || !input.pillar || !Array.isArray(input.leadIds) || !Array.isArray(input.evidence) || !Array.isArray(input.slides)) {
-    throw new Error("기획안에 topic, pillar, leadIds, evidence, slides가 필요합니다.");
+  if (!input.topic?.trim() || !input.pillar || !input.cardCountReason?.trim() || !Array.isArray(input.leadIds) || !Array.isArray(input.evidence) || !Array.isArray(input.slides)) {
+    throw new Error("기획안에 topic, pillar, cardCountReason, leadIds, evidence, slides가 필요합니다.");
   }
   const now = new Date().toISOString();
   const brief: EditorialBrief = {
@@ -290,6 +290,7 @@ async function researchIngest(args: string[]): Promise<void> {
     productId: input.productId,
     evidence: input.evidence,
     calculations: input.calculations ?? [],
+    cardCountReason: input.cardCountReason,
     slides: input.slides,
     caption: input.caption ?? "",
     cta: input.cta ?? "",

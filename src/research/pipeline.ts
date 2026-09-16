@@ -69,18 +69,24 @@ export function scoreBriefQuality(brief: EditorialBrief): number {
   let score = 0;
   if (brief.audienceProblem.trim().length >= 20) score += 15;
   if (brief.oneLineValue.trim().length >= 20) score += 15;
-  if (brief.evidence.some((item) => item.sourceTier <= 2)) score += 25;
-  if (brief.slides.length >= 5 && new Set(brief.slides.map((slide) => slide.role)).size >= 4) score += 20;
+  const makesFactualClaims = brief.calculations.length > 0 || brief.slides.some((slide) => /\d[\d,.]*\s*(원|%|개|g|kg|ml|l|일|개월|시간)/i.test(`${slide.headline} ${slide.body}`));
+  if (!makesFactualClaims || brief.evidence.some((item) => item.sourceTier <= 2)) score += 20;
+  if (brief.slides.some((slide) => slide.role === "hook")) score += 10;
   if (brief.slides.some((slide) => slide.role === "action")) score += 15;
   if (brief.slides.some((slide) => slide.role === "question") || /[?？]/.test(brief.cta)) score += 10;
+  if ((brief.cardCountReason?.trim().length ?? 0) >= 10) score += 10;
+  if (new Set(brief.slides.map((slide) => `${slide.headline.replace(/\s+/g, "")}\n${slide.body.replace(/\s+/g, "")}`)).size === brief.slides.length) score += 5;
   return score;
 }
 
 export function validateBrief(brief: EditorialBrief, leads?: ResearchLead[], products: import("../types.js").Product[] = []): ResearchValidationIssue[] {
   const issues: ResearchValidationIssue[] = [];
-  if (brief.slides.length < 4 || brief.slides.length > 7) issues.push({ level: "error", code: "SLIDE_COUNT", message: "카드뉴스는 4~7장이어야 합니다.", id: brief.id });
+  if (brief.slides.length < 2 || brief.slides.length > 10) issues.push({ level: "error", code: "SLIDE_COUNT", message: "카드뉴스는 내용에 따라 2~10장으로 구성해야 합니다.", id: brief.id });
+  if (!brief.cardCountReason?.trim() || brief.cardCountReason.trim().length < 10) issues.push({ level: "error", code: "CARD_COUNT_REASON_MISSING", message: "이 장수가 필요한 편집상 이유가 없습니다.", id: brief.id });
   if (brief.slides.some((slide, index) => slide.order !== index + 1)) issues.push({ level: "error", code: "SLIDE_ORDER", message: "슬라이드 순번이 연속적이지 않습니다.", id: brief.id });
   if (brief.slides.some((slide) => slide.headline.length > 36 || slide.body.length > 120)) issues.push({ level: "error", code: "SLIDE_COPY_TOO_LONG", message: "슬라이드 문구가 화면 기준을 초과했습니다.", id: brief.id });
+  const slideCopies = brief.slides.map((slide) => `${slide.headline.replace(/\s+/g, "")}\n${slide.body.replace(/\s+/g, "")}`);
+  if (new Set(slideCopies).size !== slideCopies.length) issues.push({ level: "error", code: "SLIDE_REDUNDANT", message: "같은 내용을 반복하는 카드가 있습니다. 합치거나 삭제하세요.", id: brief.id });
   if (!brief.slides.some((slide) => slide.role === "action" || slide.role === "question")) issues.push({ level: "error", code: "ACTION_MISSING", message: "독자가 실행하거나 답할 항목이 없습니다.", id: brief.id });
   const makesFactualClaims = brief.calculations.length > 0 || brief.slides.some((slide) => /\d[\d,.]*\s*(원|%|개|g|kg|ml|l|일|개월|시간)/i.test(`${slide.headline} ${slide.body}`));
   if (makesFactualClaims && !brief.evidence.some((item) => item.sourceTier <= 2)) issues.push({ level: "error", code: "EVIDENCE_REQUIRED", message: "숫자·사실 주장을 뒷받침하는 1~2등급 근거가 없습니다.", id: brief.id });

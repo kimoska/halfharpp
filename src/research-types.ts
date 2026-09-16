@@ -102,6 +102,7 @@ export interface EditorialBrief {
   productId?: string;
   evidence: Evidence[];
   calculations: Calculation[];
+  cardCountReason: string;
   slides: CardSlide[];
   caption: string;
   cta: string;

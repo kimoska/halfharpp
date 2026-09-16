@@ -17,10 +17,15 @@
 4. 숫자·가격·보관·안전·제도 주장은 정부·공공기관·원문 보도 등 1~2등급 출처로 다시 확인한다.
 5. 필요한 근거는 `npm run start -- research-import --url <URL> --title <제목> --excerpt <짧은 요약> --tier 1|2`로 등록한다. 원문을 길게 복사하지 않는다.
 6. 기존 기획과 겹치지 않는 구체적인 문제 하나를 고른다. 흔한 절약 문구 대신 비교표·계산·판단 기준·실행 규칙 중 하나 이상을 포함한다.
-7. `EditorialBrief` 형식의 JSON 한 건을 `data/research/inbox/`에 만든다. 5~6장으로 구성하며 hook, problem, evidence, calculation 또는 action, question 역할을 최소 4종 포함한다.
+7. `EditorialBrief` 형식의 JSON 한 건을 `data/research/inbox/`에 만든다. 카드 수를 먼저 정하지 말고 핵심 정보 단위를 먼저 나눈 뒤, 2~10장 안에서 내용을 완결하는 최소 장수만 사용한다. `cardCountReason`에 선택 이유를 적는다.
+   - 한 가지 질문과 짧은 답이면 2장으로 끝낼 수 있다.
+   - 비교 기준이나 체크 항목이 여러 개면 필요한 만큼만 늘린다.
+   - 근거·계산·예외 조건이 서로 독립적일 때만 별도 카드로 분리한다.
+   - hook→problem→evidence→action 같은 고정 순서를 억지로 반복하지 않는다.
+   - 각 카드는 앞 카드에 없던 판단 근거·계산·행동을 최소 하나 추가해야 한다. 제목과 본문만 바꾼 반복 카드는 금지한다.
 8. 모든 evidence URL은 방금 또는 기존에 등록된 lead의 canonicalUrl과 정확히 같아야 하고, `leadIds`에도 그 lead ID가 들어가야 한다.
 9. 캐릭터는 다리 없이 둥근 앞지느러미 두 개, 양 볼에 조금 긴 수염 두 가닥씩, 조개모자와 초록 미역 목도리를 지킨다.
-10. `npm run start -- research-ingest <JSON 경로>`를 실행한다. 이 명령이 근거·품질·중복을 검증하고 6장 이미지를 렌더링해 검토 대기열에 넣는다.
+10. `npm run start -- research-ingest <JSON 경로>`를 실행한다. 이 명령이 근거·품질·중복·카드 반복 여부를 검증하고 기획한 장수만큼 이미지를 렌더링해 검토 대기열에 넣는다.
 11. `npm test`, `npm run typecheck`, `npm run research:validate`, `npm run validate`를 실행한다. 하나라도 실패하면 원인을 고치고 다시 검사한다.
 12. 실제 게시 승인, 실게시 잠금 해제, 예약 작업 활성화는 하지 않는다.
 

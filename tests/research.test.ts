@@ -103,6 +103,7 @@ describe("editorial gate", () => {
     id: "b1", pillar: "info", topic: "무료배송", angle: "추가 구매액 비교", audienceProblem: "배송비를 아끼려다 필요하지 않은 상품까지 더 담게 된다", oneLineValue: "추가 구매액과 배송비를 적어 실제 지출 차이를 비교한다", leadIds: ["l1"],
     evidence: [{ title: "공식 자료", url: "https://data.go.kr/x", publisher: "한국소비자원", publishedAt: "2026-09-15", claim: "가격 자료", sourceTier: 1 }],
     calculations: [{ label: "추가 지출", formula: "추가 구매액-배송비", result: "15,000원", inputs: { extra: 18000, shipping: 3000 } }],
+    cardCountReason: "문제와 계산법, 실행 결론을 각각 한 카드에서 명확히 설명하기 위해 다섯 장을 사용한다.",
     slides: [
       { order: 1, role: "hook", headline: "배송비 아끼려다", body: "더 많이 사지 않았나요?", visualDirection: "당황한 모하프" },
       { order: 2, role: "problem", headline: "먼저 두 금액을 적어요", body: "배송비와 추가 구매액", visualDirection: "영수증" },
@@ -115,6 +116,24 @@ describe("editorial gate", () => {
 
   it("accepts an actionable, evidenced 5-slide brief", () => {
     expect(validateBrief(brief)).toHaveLength(0);
+  });
+
+  it("accepts a concise 2-slide brief when two cards are enough", () => {
+    const concise = {
+      ...brief,
+      calculations: [],
+      cardCountReason: "질문과 바로 실행할 답만 있으면 충분해 두 장으로 끝낸다.",
+      slides: [
+        { order: 1, role: "hook" as const, headline: "무료배송까지 얼마 남았나요?", body: "필요 없는 물건을 더 담기 전에 추가 구매액을 확인해요.", visualDirection: "장바구니를 보는 모하프" },
+        { order: 2, role: "action" as const, headline: "배송비와 추가 구매액 비교", body: "추가 구매액이 더 크다면 배송비를 내는 선택도 검토해요.", visualDirection: "두 금액 비교표" }
+      ]
+    };
+    expect(validateBrief(concise)).toHaveLength(0);
+  });
+
+  it("blocks filler cards that repeat the same copy", () => {
+    const repeated = { ...brief, slides: [brief.slides[0]!, { ...brief.slides[0]!, order: 2 }] };
+    expect(validateBrief(repeated).some((issue) => issue.code === "SLIDE_REDUNDANT")).toBe(true);
   });
 
   it("blocks numeric claims without evidence", () => {
