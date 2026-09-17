@@ -4,6 +4,7 @@ import sharp from "sharp";
 import type { CardSlide, EditorialBrief } from "../research-types.js";
 import { paths } from "../paths.js";
 import { escapeXml, wrapKorean } from "../utils.js";
+import { renderGymRefundEditorial } from "./gym-card-renderer.js";
 import { renderWeddingEditorial } from "./wedding-card-renderer.js";
 
 const WIDTH = 1080;
@@ -114,6 +115,7 @@ function posePlacement(role: CardSlide["role"]): { size: number; left: number; t
 }
 
 export async function renderEditorialBrief(brief: EditorialBrief): Promise<string[]> {
+  if (brief.id === "gym-refund-real-price-v1") return renderGymRefundEditorial(brief);
   if (brief.id === "wedding-total-quote-check-v1") return renderWeddingEditorial(brief);
   const outputDir = path.join(paths.generated, "briefs", brief.id);
   await fs.mkdir(outputDir, { recursive: true });

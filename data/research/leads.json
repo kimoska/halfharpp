@@ -133,5 +133,37 @@
       "출처 등급 1"
     ],
     "verification": "supported"
+  },
+  {
+    "id": "gym-refund-kca-2026",
+    "source": "official",
+    "query": "헬스장 중도해지 환불 계산",
+    "title": "한국소비자원 2026 헬스장 환불 분쟁 사례",
+    "excerpt": "헬스장 중도해지 환급 과정에서 무료 기간 제외, 정상가 차감 등 계산 기준을 둘러싼 분쟁이 발생할 수 있다.",
+    "url": "https://www.kca.go.kr/webzine/board/view?div=kca_2606&linkId=1023&menuId=MENU00307",
+    "canonicalUrl": "https://www.kca.go.kr/webzine/board/view?div=kca_2606&linkId=1023&menuId=MENU00307",
+    "author": "한국소비자원 소비자시대",
+    "publishedAt": "2026-06-01T00:00:00+09:00",
+    "discoveredAt": "2026-09-17T02:30:00.000Z",
+    "sourceTier": 1,
+    "score": 74,
+    "scoreReasons": ["최근 공식 피해 사례", "환급 계산 가능", "실행 문구 구성 가능", "출처 등급 1"],
+    "verification": "supported"
+  },
+  {
+    "id": "gym-refund-consumer24",
+    "source": "official",
+    "query": "헬스장 PT 소비자분쟁해결기준",
+    "title": "헬스장·PT 계약 및 이용연기 소비자피해",
+    "excerpt": "소비자 사정으로 이용 개시 후 해지할 때는 이용한 부분과 총 이용금액의 10%를 공제하는 소비자분쟁해결기준을 안내한다.",
+    "url": "https://www.consumer.go.kr/user/ftc/consumer/cnsmrBBS/740/selectInfoCDMGCSLCDetail.do?cntntsId=00000347&infoId=A1079148",
+    "canonicalUrl": "https://www.consumer.go.kr/user/ftc/consumer/cnsmrBBS/740/selectInfoCDMGCSLCDetail.do?cntntsId=00000347&infoId=A1079148",
+    "author": "한국소비자원 소비자24",
+    "publishedAt": "2022-06-26T00:00:00+09:00",
+    "discoveredAt": "2026-09-17T02:31:00.000Z",
+    "sourceTier": 1,
+    "score": 71,
+    "scoreReasons": ["공식 분쟁해결기준", "환급 공식 제공", "계약 피해 사례", "출처 등급 1"],
+    "verification": "supported"
   }
 ]

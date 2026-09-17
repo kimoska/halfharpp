@@ -82,5 +82,30 @@
       "public/generated/briefs/wedding-total-quote-check-v1/07.png"
     ],
     "imagePath": "public/generated/briefs/wedding-total-quote-check-v1/01.png"
+  },
+  {
+    "id": "brief-gym-refund-real-price-v1",
+    "briefId": "gym-refund-real-price-v1",
+    "pillar": "info",
+    "scheduledAt": "2026-09-18T08:10:00+09:00",
+    "status": "draft",
+    "hook": "헬스장 환불, ‘정상가 차감’ 전에 이 계산부터",
+    "body": "헬스장이나 PT를 중도해지할 때 ‘할인 상품이니 정상가로 다시 계산한다’는 말을 들으면, 먼저 계산표부터 받아보세요. 소비자분쟁해결기준 안내는 이용 시작 뒤 소비자 사정으로 해지할 경우 사용한 부분과 총 이용금액의 10%를 공제하는 방식입니다. 가상으로 12개월 회원권을 72만원에 결제하고 3개월 사용했다면, 실제 결제액을 기간으로 나눈 사용분은 18만원이고 위약금은 7만2천원이라 환급액은 46만8천원입니다. 월 정상가 15만원으로 사용분을 다시 잡으면 19만8천원으로 27만원 차이가 납니다. 계약 특약과 PT 횟수·무료 기간·휴회 방식에 따라 달라질 수 있으니 계약서와 문자 증빙을 기준으로 확인하세요. ※ 금액은 계산을 설명하기 위한 가상 예시입니다.",
+    "cta": "중도해지 계산서를 받아봤다면 사용분을 결제가격과 정상가격 중 어느 쪽으로 계산했나요?",
+    "text": "헬스장 환불, ‘정상가 차감’ 전에 이 계산부터\n\n헬스장이나 PT를 중도해지할 때 ‘할인 상품이니 정상가로 다시 계산한다’는 말을 들으면, 먼저 계산표부터 받아보세요. 소비자분쟁해결기준 안내는 이용 시작 뒤 소비자 사정으로 해지할 경우 사용한 부분과 총 이용금액의 10%를 공제하는 방식입니다. 가상으로 12개월 회원권을 72만원에 결제하고 3개월 사용했다면, 실제 결제액을 기간으로 나눈 사용분은 18만원이고 위약금은 7만2천원이라 환급액은 46만8천원입니다. 월 정상가 15만원으로 사용분을 다시 잡으면 19만8천원으로 27만원 차이가 납니다. 계약 특약과 PT 횟수·무료 기간·휴회 방식에 따라 달라질 수 있으니 계약서와 문자 증빙을 기준으로 확인하세요. ※ 금액은 계산을 설명하기 위한 가상 예시입니다.\n\n중도해지 계산서를 받아봤다면 사용분을 결제가격과 정상가격 중 어느 쪽으로 계산했나요?\n\n#모하프 #하프하프 #생활비절약",
+    "template": "editorial-carousel-v1",
+    "requiresApproval": true,
+    "attempts": 0,
+    "createdAt": "2026-09-17T04:13:17.745Z",
+    "updatedAt": "2026-09-17T04:13:17.745Z",
+    "imagePaths": [
+      "public/generated/briefs/gym-refund-real-price-v1/01.png",
+      "public/generated/briefs/gym-refund-real-price-v1/02.png",
+      "public/generated/briefs/gym-refund-real-price-v1/03.png",
+      "public/generated/briefs/gym-refund-real-price-v1/04.png",
+      "public/generated/briefs/gym-refund-real-price-v1/05.png",
+      "public/generated/briefs/gym-refund-real-price-v1/06.png"
+    ],
+    "imagePath": "public/generated/briefs/gym-refund-real-price-v1/01.png"
   }
 ]
