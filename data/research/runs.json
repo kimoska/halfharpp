@@ -444,5 +444,39 @@
         "message": "YOUTUBE_API_KEY 없음"
       }
     ]
+  },
+  {
+    "id": "b71f74d7f0dd162c",
+    "startedAt": "2026-09-16T21:31:23.935Z",
+    "finishedAt": "2026-09-16T21:31:23.948Z",
+    "collected": 0,
+    "accepted": 0,
+    "duplicates": 0,
+    "diagnostics": [
+      {
+        "source": "naver_blog",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_cafe",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "naver_news",
+        "status": "skipped",
+        "collected": 0,
+        "message": "NAVER_CLIENT_ID/SECRET 없음"
+      },
+      {
+        "source": "youtube",
+        "status": "skipped",
+        "collected": 0,
+        "message": "YOUTUBE_API_KEY 없음"
+      }
+    ]
   }
 ]

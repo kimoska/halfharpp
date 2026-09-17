@@ -56,5 +56,37 @@
       "public/generated/briefs/selection-discount-check-v1/03.png"
     ],
     "imagePath": "public/generated/briefs/selection-discount-check-v1/01.png"
+  },
+  {
+    "id": "brief-wedding-total-quote-check-v1",
+    "briefId": "wedding-total-quote-check-v1",
+    "pillar": "info",
+    "scheduledAt": "2026-09-18T08:10:00+09:00",
+    "status": "draft",
+    "hook": "웨딩 견적, 시작가만 보면 틀려요",
+    "body": "웨딩 견적은 패키지 시작가가 아니라 같은 조건의 총액으로 비교해야 합니다. 대관료·기본장식·식대·스드메·필수 선택품목을 한 식에 넣고, 최소보증인원과 예상 하객 수 기준 견적을 각각 받아 보세요. 계약 전에는 기본·선택 품목의 요금과 취소 위약금·환급기준까지 확인합니다.",
+    "cta": "지금 받은 견적에 빠진 필수 선택품목이나 취소 조건은 없나요?",
+    "text": "웨딩 견적, 시작가만 보면 틀려요\n\n웨딩 견적은 패키지 시작가가 아니라 같은 조건의 총액으로 비교해야 합니다. 대관료·기본장식·식대·스드메·필수 선택품목을 한 식에 넣고, 최소보증인원과 예상 하객 수 기준 견적을 각각 받아 보세요. 계약 전에는 기본·선택 품목의 요금과 취소 위약금·환급기준까지 확인합니다.\n\n지금 받은 견적에 빠진 필수 선택품목이나 취소 조건은 없나요?\n\n#모하프 #하프하프 #생활비절약",
+    "template": "editorial-carousel-v1",
+    "requiresApproval": true,
+    "attempts": 0,
+    "createdAt": "2026-09-16T21:35:02.014Z",
+    "updatedAt": "2026-09-17T01:28:20.615Z",
+    "imagePaths": [
+      "public/generated/briefs/wedding-total-quote-check-v1/01.png",
+      "public/generated/briefs/wedding-total-quote-check-v1/02.png",
+      "public/generated/briefs/wedding-total-quote-check-v1/03.png",
+      "public/generated/briefs/wedding-total-quote-check-v1/04.png",
+      "public/generated/briefs/wedding-total-quote-check-v1/05.png"
+    ],
+    "imagePath": "public/generated/briefs/wedding-total-quote-check-v1/01.png",
+    "publicImageUrls": [
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/ccda20208d93c384-01.png",
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/5925e6784820387e-02.png",
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/77f46be3391fcccd-03.png",
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/0de848ea12139aa7-04.png",
+      "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/5488eb788d2f3fa5-05.png"
+    ],
+    "publicImageUrl": "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/ccda20208d93c384-01.png"
   }
 ]

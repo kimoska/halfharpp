@@ -331,6 +331,36 @@ async function researchRender(args: string[]): Promise<void> {
   if (queueChanged) await saveQueue(queue);
 }
 
+async function testUpload(id: string | undefined): Promise<void> {
+  if (!id) throw new Error("비공개 업로드를 시험할 게시물 ID가 필요합니다.");
+  const [brand, automation, queue] = await Promise.all([loadBrand(), loadAutomation(), loadQueue()]);
+  const post = queue.find((item) => item.id === id);
+  if (!post) throw new Error(`게시물을 찾지 못했습니다: ${id}`);
+  if (post.status === "published") throw new Error("이미 공개된 게시물은 비공개 업로드 시험 대상이 아닙니다.");
+  const issues = validatePost(post, brand).filter((issue) => issue.level === "error");
+  if (issues.length) throw new Error(`게시물 검증 실패:\n${issues.map((issue) => `${issue.code}: ${issue.message}`).join("\n")}`);
+
+  const imagePaths = (post.imagePaths?.length ? post.imagePaths : [post.imagePath]).filter((item): item is string => Boolean(item));
+  if (imagePaths.length === 0) throw new Error("시험할 카드뉴스 이미지가 없습니다.");
+  const missing = (await Promise.all(imagePaths.map((item) => fs.stat(path.resolve(item)).catch(() => null)))).some((item) => !item);
+  if (missing) throw new Error("카드뉴스 이미지 일부가 없습니다. research-render를 다시 실행하세요.");
+
+  if (!post.publicImageUrls?.length || post.publicImageUrls.length !== imagePaths.length) {
+    const urls: string[] = [];
+    for (const item of imagePaths) urls.push(await makePublic(path.resolve(item)));
+    post.publicImageUrls = urls;
+    post.publicImageUrl = urls[0];
+  }
+
+  const result = await new ThreadsClient().prepareUnpublished(post, automation);
+  post.updatedAt = new Date().toISOString();
+  await saveQueue(queue);
+  await appendLog({ event: "container_test", postId: post.id, containerId: result.id, status: result.status, imageCount: imagePaths.length });
+  console.log(`✓ 비공개 컨테이너 검증 완료: ${result.id} / ${imagePaths.length}장 / 상태 ${result.status ?? "생성됨"}`);
+  console.log("- threads_publish를 호출하지 않았으므로 Threads 피드에는 게시되지 않았습니다.");
+  console.log("- 게시물 상태는 draft로 유지했습니다.");
+}
+
 async function researchQueue(args: string[]): Promise<void> {
   const id = args[0];
   if (!id) throw new Error("대기열에 넣을 기획안 ID가 필요합니다.");
@@ -478,7 +508,7 @@ async function initSecrets(): Promise<void> {
 }
 
 function help(): void {
-  console.log(`모하프 Threads 자동화\n\n명령:\n  init-secrets\n  research-doctor\n  research-collect\n  research-cycle\n  research-import --url <주소> --title <제목> [--excerpt <요약>] [--tier 1|2]\n  research-ingest <기획안.json>\n  research-plan [--leads 10]\n  research-render [기획안ID]\n  research-queue <기획안ID> [--at ISO시각]\n  research-validate\n  research-report\n  toss-doctor\n  toss-sync\n  validate\n  doctor\n  seed --days 30 --legacy\n  reseed --days 30 --legacy\n  sync-products\n  ai-enrich --limit 10\n  render [--all]\n  extract-poses\n  approve <게시물ID>\n  run [--dry-run] [--all-due]\n  insights\n  report`);
+  console.log(`모하프 Threads 자동화\n\n명령:\n  init-secrets\n  research-doctor\n  research-collect\n  research-cycle\n  research-import --url <주소> --title <제목> [--excerpt <요약>] [--tier 1|2]\n  research-ingest <기획안.json>\n  research-plan [--leads 10]\n  research-render [기획안ID]\n  research-queue <기획안ID> [--at ISO시각]\n  research-validate\n  research-report\n  toss-doctor\n  toss-sync\n  validate\n  doctor\n  seed --days 30 --legacy\n  reseed --days 30 --legacy\n  sync-products\n  ai-enrich --limit 10\n  render [--all]\n  extract-poses\n  approve <게시물ID>\n  test-upload <게시물ID>\n  run [--dry-run] [--all-due]\n  insights\n  report`);
 }
 
 async function main(): Promise<void> {
@@ -507,6 +537,7 @@ async function main(): Promise<void> {
     case "render": await render(args); break;
     case "extract-poses": await extractPosePack(); break;
     case "approve": await approve(args[0]); break;
+    case "test-upload": await testUpload(args[0]); break;
     case "run": await run(args); break;
     case "insights": await insights(); break;
     case "report": await report(); break;

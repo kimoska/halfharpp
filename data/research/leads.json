@@ -20,26 +20,6 @@
     "verification": "supported"
   },
   {
-    "id": "smartchoice-plan-compare",
-    "source": "manual",
-    "query": "통신요금제 비교",
-    "title": "스마트초이스 이동전화 요금제 비교",
-    "excerpt": "요금제와 선택약정 할인 여부를 비교할 수 있으며 선택약정 이용 중 해지하면 할인금액 일부를 반환하는 할인반환금이 발생할 수 있다.",
-    "url": "https://www.smartchoice.or.kr/smc/plan/planCompare.do?type=m",
-    "canonicalUrl": "https://www.smartchoice.or.kr/smc/plan/planCompare.do?type=m",
-    "author": "스마트초이스",
-    "discoveredAt": "2026-09-16T06:00:00.000Z",
-    "sourceTier": 2,
-    "score": 64,
-    "scoreReasons": [
-      "요금제 비교 실행 정보",
-      "현재 공식 안내 확인",
-      "출처 등급 2",
-      "해지 조건 포함"
-    ],
-    "verification": "supported"
-  },
-  {
     "id": "official-price-intro",
     "source": "official",
     "query": "생활비 절약 가격 비교",
@@ -56,6 +36,26 @@
       "게시일 미상",
       "출처 등급 1",
       "문제·질문 구조"
+    ],
+    "verification": "supported"
+  },
+  {
+    "id": "smartchoice-plan-compare",
+    "source": "manual",
+    "query": "통신요금제 비교",
+    "title": "스마트초이스 이동전화 요금제 비교",
+    "excerpt": "요금제와 선택약정 할인 여부를 비교할 수 있으며 선택약정 이용 중 해지하면 할인금액 일부를 반환하는 할인반환금이 발생할 수 있다.",
+    "url": "https://www.smartchoice.or.kr/smc/plan/planCompare.do?type=m",
+    "canonicalUrl": "https://www.smartchoice.or.kr/smc/plan/planCompare.do?type=m",
+    "author": "스마트초이스",
+    "discoveredAt": "2026-09-16T06:00:00.000Z",
+    "sourceTier": 2,
+    "score": 64,
+    "scoreReasons": [
+      "요금제 비교 실행 정보",
+      "현재 공식 안내 확인",
+      "출처 등급 2",
+      "해지 조건 포함"
     ],
     "verification": "supported"
   },
@@ -93,6 +93,42 @@
     "score": 59,
     "scoreReasons": [
       "절약 연관어 2개",
+      "게시일 미상",
+      "출처 등급 1"
+    ],
+    "verification": "supported"
+  },
+  {
+    "id": "39516bb5251bb7e30d33",
+    "source": "official",
+    "query": "웨딩 견적 총액 비교",
+    "title": "참가격 결혼서비스 지역별 가격정보",
+    "excerpt": "결혼서비스 총비용은 대관료·기본장식비·총 식대·스드메 평균 계약금액의 합이며 선택품목은 포함하지 않는다.",
+    "url": "https://www.price.go.kr/tprice/portal/wedding/areaStatisticDetail.do",
+    "canonicalUrl": "https://www.price.go.kr/tprice/portal/wedding/areaStatisticDetail.do",
+    "discoveredAt": "2026-09-16T21:33:52.139Z",
+    "sourceTier": 1,
+    "score": 41,
+    "scoreReasons": [
+      "절약 연관어 1개",
+      "게시일 미상",
+      "출처 등급 1"
+    ],
+    "verification": "supported"
+  },
+  {
+    "id": "ae31ad76e783975bc1c2",
+    "source": "official",
+    "query": "웨딩 견적 추가금 절약",
+    "title": "결혼서비스 중요정보고시 준수 집중점검",
+    "excerpt": "예식장·결혼준비대행업자는 기본서비스와 선택품목별 내용·요금, 계약 해지 위약금과 환급기준을 홈페이지나 참가격 및 계약서 표지에 표시해야 한다.",
+    "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772860",
+    "canonicalUrl": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156772860",
+    "discoveredAt": "2026-09-16T21:33:42.974Z",
+    "sourceTier": 1,
+    "score": 41,
+    "scoreReasons": [
+      "절약 연관어 1개",
       "게시일 미상",
       "출처 등급 1"
     ],

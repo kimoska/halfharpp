@@ -65,7 +65,7 @@ function slideContent(brief: EditorialBrief, slide: CardSlide): string {
     ${textLines(slide.body, 21, 5, 164, 515, 34, 55, 500, "#514B43")}
     <rect x="120" y="790" width="840" height="138" rx="28" fill="#EAF2D9" stroke="#A9BE86" stroke-width="3"/>
     <text x="154" y="836" font-family="Malgun Gothic, sans-serif" font-size="22" font-weight="800" fill="#55733F">확인한 원문</text>
-    ${textLines(source || "등록된 근거 자료", 44, 2, 154, 878, 23, 32, 500, "#675E55")}`;
+    ${textLines(source || "등록된 근거 자료", 31, 2, 154, 878, 23, 32, 500, "#675E55")}`;
   if (["calculation", "action", "product"].includes(slide.role)) return `
     ${textLines(slide.headline, 15, 2, 120, 292, 60, 78, 800, "#49372A")}
     <rect x="120" y="455" width="548" height="410" rx="38" fill="#FFF7E6" stroke="#E8D7BD" stroke-width="3"/>

@@ -63,4 +63,25 @@ describe("ThreadsClient", () => {
     expect(parent.get("media_type")).toBe("CAROUSEL");
     expect(parent.get("children")).toBe("child-1,child-2");
   });
+
+  it("prepares a carousel container without publishing it", async () => {
+    process.env.THREADS_ACCESS_TOKEN = "token";
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: "child-1" }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: "child-1", status: "FINISHED" }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: "child-2" }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: "child-2", status: "FINISHED" }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: "parent" }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: "parent", status: "FINISHED" }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await new ThreadsClient().prepareUnpublished(
+      { ...post, publicImageUrl: undefined, publicImageUrls: ["https://example.com/1.png", "https://example.com/2.png"] },
+      automation
+    );
+
+    expect(result).toEqual(expect.objectContaining({ id: "parent", status: "FINISHED" }));
+    expect(fetchMock).toHaveBeenCalledTimes(6);
+    expect(fetchMock.mock.calls.every(([url]) => !String(url).includes("threads_publish"))).toBe(true);
+  });
 });

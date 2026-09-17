@@ -61,7 +61,37 @@ export class ThreadsClient {
     return { ...published, ...details };
   }
 
+  /**
+   * Uploads and processes a Threads container without publishing it.
+   * This intentionally never calls /threads_publish, so nothing appears in the feed.
+   */
+  async prepareUnpublished(post: QueuePost, automation: AutomationConfig): Promise<ApiResult> {
+    this.assertToken();
+    if ((post.publicImageUrls?.length ?? 0) > 1) return this.createCarouselContainer(post, automation);
+    const create = new URLSearchParams({ text: post.text, reply_control: automation.defaultReplyControl });
+    const singleImage = post.publicImageUrl ?? post.publicImageUrls?.[0];
+    if (singleImage) {
+      create.set("media_type", "IMAGE");
+      create.set("image_url", singleImage);
+      create.set("alt_text", `${post.hook}. 하프물범 모하프 카드뉴스 이미지.`);
+    } else {
+      create.set("media_type", "TEXT");
+      if (post.affiliateUrl) create.set("link_attachment", post.affiliateUrl);
+    }
+    const container = await this.request(`${this.userId}/threads`, "POST", create);
+    if (!container.id) throw new Error("Threads 컨테이너 ID가 없습니다.");
+    if (singleImage) await this.waitUntilReady(container.id);
+    return { ...container, status: singleImage ? "FINISHED" : container.status };
+  }
+
   private async publishCarousel(post: QueuePost, automation: AutomationConfig): Promise<ApiResult> {
+    const parent = await this.createCarouselContainer(post, automation);
+    const published = await this.request(`${this.userId}/threads_publish`, "POST", new URLSearchParams({ creation_id: parent.id }));
+    const details = await this.request(`${published.id}`, "GET", new URLSearchParams({ fields: "id,permalink,timestamp" }));
+    return { ...published, ...details };
+  }
+
+  private async createCarouselContainer(post: QueuePost, automation: AutomationConfig): Promise<ApiResult> {
     const childIds: string[] = [];
     for (const [index, imageUrl] of post.publicImageUrls!.entries()) {
       const child = await this.request(`${this.userId}/threads`, "POST", new URLSearchParams({
@@ -82,9 +112,7 @@ export class ThreadsClient {
     }));
     if (!parent.id) throw new Error("Threads 캐러셀 컨테이너 ID가 없습니다.");
     await this.waitUntilReady(parent.id);
-    const published = await this.request(`${this.userId}/threads_publish`, "POST", new URLSearchParams({ creation_id: parent.id }));
-    const details = await this.request(`${published.id}`, "GET", new URLSearchParams({ fields: "id,permalink,timestamp" }));
-    return { ...published, ...details };
+    return { ...parent, status: "FINISHED" };
   }
 
   private async waitUntilReady(containerId: string): Promise<void> {

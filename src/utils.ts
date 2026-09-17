@@ -25,17 +25,25 @@ export function escapeXml(value: string): string {
 
 export function wrapKorean(value: string, maxUnits: number): string[] {
   const lines: string[] = [];
+  const width = (text: string): number => [...text].reduce((sum, char) => sum + (/[\u0000-\u00ff]/.test(char) ? 0.55 : 1), 0);
   let current = "";
-  let units = 0;
-  for (const char of value.trim()) {
-    const size = /[\u0000-\u00ff]/.test(char) ? 0.55 : 1;
-    if (units + size > maxUnits && current) {
-      lines.push(current);
-      current = "";
-      units = 0;
+  for (const word of value.trim().split(/\s+/)) {
+    const candidate = current ? `${current} ${word}` : word;
+    if (width(candidate) <= maxUnits) {
+      current = candidate;
+      continue;
     }
-    current += char;
-    units += size;
+    if (current) lines.push(`${current} `);
+    current = "";
+    let fragment = "";
+    for (const char of word) {
+      if (width(fragment + char) > maxUnits && fragment) {
+        lines.push(fragment);
+        fragment = "";
+      }
+      fragment += char;
+    }
+    current = fragment;
   }
   if (current) lines.push(current);
   return lines;
