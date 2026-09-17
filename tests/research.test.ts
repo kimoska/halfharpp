@@ -140,6 +140,28 @@ describe("editorial gate", () => {
     expect(validateBrief({ ...brief, evidence: [] }).some((issue) => issue.code === "EVIDENCE_REQUIRED")).toBe(true);
   });
 
+  it("blocks AI-like filler wording", () => {
+    const clichéd = { ...brief, caption: "현명한 소비를 위한 꿀팁을 소개할게요." };
+    expect(validateBrief(clichéd).some((issue) => issue.code === "AI_CLICHE_COPY")).toBe(true);
+  });
+
+  it("blocks a shallow brief without a decision rule or concrete action", () => {
+    const shallow = {
+      ...brief,
+      calculations: [],
+      evidence: [],
+      angle: "생활비를 아끼는 마음가짐",
+      oneLineValue: "일상에서 작은 습관을 꾸준히 이어가며 절약한다",
+      caption: "작은 습관을 꾸준히 이어가면 생활비를 아낄 수 있습니다.",
+      cta: "여러분의 절약 습관은 무엇인가요?",
+      slides: [
+        { order: 1, role: "hook" as const, headline: "작은 습관의 힘", body: "오늘부터 절약을 시작해요.", visualDirection: "웃는 모하프" },
+        { order: 2, role: "action" as const, headline: "꾸준히 실천해요", body: "매일 작은 습관을 이어가요.", visualDirection: "달력" }
+      ]
+    };
+    expect(validateBrief(shallow).some((issue) => issue.code === "DEPTH_SIGNAL_MISSING")).toBe(true);
+  });
+
   it("blocks evidence URLs that were not in the collected research", () => {
     const lead = makeLead({ source: "official", query: "생활비 절약", title: "공식 가격 자료", url: "https://data.go.kr/source", sourceTier: 1, maxExcerptChars: 80 });
     expect(validateBrief(brief, [lead]).some((issue) => issue.code === "EVIDENCE_NOT_IN_RESEARCH")).toBe(true);

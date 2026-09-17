@@ -81,6 +81,14 @@ export function scoreBriefQuality(brief: EditorialBrief): number {
 
 export function validateBrief(brief: EditorialBrief, leads?: ResearchLead[], products: import("../types.js").Product[] = []): ResearchValidationIssue[] {
   const issues: ResearchValidationIssue[] = [];
+  const fullCopy = [brief.topic, brief.angle, brief.oneLineValue, brief.caption, brief.cta, ...brief.slides.flatMap((slide) => [slide.headline, slide.body])].join(" ");
+  const aiCliche = /(현명한\s*(소비|선택)|똑똑한\s*(소비|선택)|한눈에\s*(확인|정리)|꼭\s*기억해\s*두세요|도움이\s*될\s*거예요|알아두면\s*좋아요|지금부터\s*알아볼까요|꿀팁을\s*소개)/;
+  const depthSignals = [
+    brief.calculations.length > 0,
+    /(보다|초과|미만|이상|이하|이면|경우|기준|차이|합계|총액|정산)/.test(fullCopy),
+    /(다만|예외|달라|제외|포함|해지|위약|환급|실제|계약)/.test(fullCopy),
+    /(문서|청구서|견적서|문자|메일|조회|적어|계산|비교|요청)/.test(fullCopy)
+  ].filter(Boolean).length;
   if (brief.slides.length < 2 || brief.slides.length > 10) issues.push({ level: "error", code: "SLIDE_COUNT", message: "카드뉴스는 내용에 따라 2~10장으로 구성해야 합니다.", id: brief.id });
   if (!brief.cardCountReason?.trim() || brief.cardCountReason.trim().length < 10) issues.push({ level: "error", code: "CARD_COUNT_REASON_MISSING", message: "이 장수가 필요한 편집상 이유가 없습니다.", id: brief.id });
   if (brief.slides.some((slide, index) => slide.order !== index + 1)) issues.push({ level: "error", code: "SLIDE_ORDER", message: "슬라이드 순번이 연속적이지 않습니다.", id: brief.id });
@@ -96,6 +104,8 @@ export function validateBrief(brief: EditorialBrief, leads?: ResearchLead[], pro
     if (!product) issues.push({ level: "error", code: "AFFILIATE_PRODUCT_MISSING", message: "활성 상품 스냅샷과 연결되지 않은 제휴 기획안입니다.", id: brief.id });
   }
   if (!brief.oneLineValue.trim()) issues.push({ level: "error", code: "VALUE_EMPTY", message: "독자가 얻는 한 줄 가치가 없습니다.", id: brief.id });
+  if (aiCliche.test(fullCopy)) issues.push({ level: "error", code: "AI_CLICHE_COPY", message: "AI식 상투어 대신 구체적인 사실·행동·판단 기준으로 다시 쓰세요.", id: brief.id });
+  if (depthSignals < 2) issues.push({ level: "error", code: "DEPTH_SIGNAL_MISSING", message: "계산·판단 기준·예외 조건·복사 가능한 행동 중 두 가지 이상이 필요합니다.", id: brief.id });
   if (scoreBriefQuality(brief) < 75) issues.push({ level: "error", code: "BRIEF_QUALITY_LOW", message: "문제·근거·실행·질문의 기획 품질 점수가 75점 미만입니다.", id: brief.id });
   if (leads) {
     const allowed = new Set(leads.filter((lead) => brief.leadIds.includes(lead.id)).map((lead) => lead.canonicalUrl));
