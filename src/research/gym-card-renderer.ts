@@ -36,20 +36,20 @@ function cardSvg(order: number): Buffer {
     <rect x="86" y="156" width="690" height="760" rx="36" fill="#FBF7EF" fill-opacity=".96"/>
     <text x="118" y="225" font-family="Malgun Gothic" font-size="23" font-weight="800" fill="${apricot}">GYM REFUND CHECK</text>
     <text x="116" y="350" font-family="Malgun Gothic" font-size="62" font-weight="900" fill="${cocoa}">헬스장 환불,</text>
-    <text x="116" y="442" font-family="Malgun Gothic" font-size="62" font-weight="900" fill="${cocoa}">‘정상가 차감’ 전에</text>
-    <text x="116" y="534" font-family="Malgun Gothic" font-size="62" font-weight="900" fill="${sage}">이 계산부터</text>
+    <text x="116" y="442" font-family="Malgun Gothic" font-size="59" font-weight="900" fill="${cocoa}">정상가로 계산한다면</text>
+    <text x="116" y="534" font-family="Malgun Gothic" font-size="59" font-weight="900" fill="${sage}">이것부터 확인하세요</text>
     <rect x="116" y="598" width="530" height="5" rx="2" fill="${apricot}"/>
-    ${lines("할인 회원권을 해지한다고 사용한 달까지 정상가로 돌아가는 건지 먼저 따져봐야 합니다.", 19, 118, 676, 31, 50, 680)}
+    ${lines("할인 회원권을 중간에 해지할 때, 사용한 기간을 정말 정상가로 계산하는지부터 따져봐야 합니다.", 19, 118, 676, 31, 50, 680)}
     <rect x="116" y="846" width="370" height="58" rx="29" fill="${sage}"/><text x="301" y="884" text-anchor="middle" font-family="Malgun Gothic" font-size="22" font-weight="800" fill="#FFFFFF">가상 금액으로 직접 계산</text>`);
 
   if (order === 2) return shell(2, "먼저 기준", `
-    <text x="92" y="218" font-family="Malgun Gothic" font-size="55" font-weight="900" fill="${cocoa}">환급 계산은 실제 결제액에서 시작</text>
-    <text x="92" y="270" font-family="Malgun Gothic" font-size="24" font-weight="600" fill="#75675D">이용 시작 뒤, 소비자 사정으로 해지하는 경우</text>
+    <text x="92" y="218" font-family="Malgun Gothic" font-size="55" font-weight="900" fill="${cocoa}">환불 계산의 출발점은 실제 결제액</text>
+    <text x="92" y="270" font-family="Malgun Gothic" font-size="24" font-weight="600" fill="#75675D">이용을 시작한 뒤 내 사정으로 해지하는 경우</text>
     <rect x="92" y="350" width="895" height="286" rx="36" fill="#3E5140"/>
     <text x="540" y="425" text-anchor="middle" font-family="Malgun Gothic" font-size="25" font-weight="800" fill="#DCE7D2">소비자분쟁해결기준 안내</text>
     <text x="540" y="510" text-anchor="middle" font-family="Malgun Gothic" font-size="36" font-weight="900" fill="#FFFFFF">실제 결제액 − 사용한 부분 − 결제액의 10%</text>
-    <text x="540" y="570" text-anchor="middle" font-family="Malgun Gothic" font-size="23" font-weight="700" fill="#F3C89F">= 남은 환급액</text>
-    <rect x="92" y="684" width="895" height="222" rx="34" fill="${pale}"/>${lines("업체가 적어 둔 ‘월 정상가’가 아니라 내가 실제로 낸 금액을 기준으로 계산했는지 확인하는 게 핵심입니다.", 30, 136, 760, 30, 49, 740)}
+    <text x="540" y="570" text-anchor="middle" font-family="Malgun Gothic" font-size="23" font-weight="700" fill="#F3C89F">= 남은 환불금</text>
+    <rect x="92" y="684" width="895" height="222" rx="34" fill="${pale}"/>${lines("헬스장이 안내한 ‘월 정상가’가 아니라 내가 실제로 낸 금액으로 계산했는지 확인해야 합니다.", 30, 136, 760, 30, 49, 740)}
     ${lines("※ 별도 특약·사업자 귀책 여부에 따라 달라질 수 있습니다.", 38, 92, 995, 23, 38, 650, "#9B8776")}`);
 
   if (order === 3) return shell(3, "직접 계산", `
@@ -57,29 +57,29 @@ function cardSvg(order: number): Buffer {
     <text x="92" y="270" font-family="Malgun Gothic" font-size="23" font-weight="700" fill="#9B8776">※ 계산을 위한 가상 조건입니다</text>
     <rect x="92" y="344" width="895" height="160" rx="30" fill="${pale}"/><text x="132" y="408" font-family="Malgun Gothic" font-size="26" font-weight="800" fill="${sage}">사용한 부분</text><text x="940" y="442" text-anchor="end" font-family="Malgun Gothic" font-size="47" font-weight="900" fill="${cocoa}">72만원 ÷ 12 × 3 = 18만원</text>
     <rect x="92" y="536" width="895" height="160" rx="30" fill="#F8EFE5"/><text x="132" y="600" font-family="Malgun Gothic" font-size="26" font-weight="800" fill="#A76B3F">위약금 10%</text><text x="940" y="634" text-anchor="end" font-family="Malgun Gothic" font-size="47" font-weight="900" fill="${cocoa}">72만원 × 10% = 7만2천원</text>
-    <rect x="92" y="742" width="895" height="242" rx="36" fill="#3E5140"/><text x="132" y="820" font-family="Malgun Gothic" font-size="26" font-weight="800" fill="#DCE7D2">가상 환급액</text><text x="132" y="920" font-family="Malgun Gothic" font-size="67" font-weight="900" fill="#FFFFFF">46만8천원</text>
+    <rect x="92" y="742" width="895" height="242" rx="36" fill="#3E5140"/><text x="132" y="820" font-family="Malgun Gothic" font-size="26" font-weight="800" fill="#DCE7D2">가상 환불금</text><text x="132" y="920" font-family="Malgun Gothic" font-size="67" font-weight="900" fill="#FFFFFF">46만8천원</text>
     <text x="92" y="1075" font-family="Malgun Gothic" font-size="26" font-weight="800" fill="#75675D">72만원 − 18만원 − 7만2천원</text>`);
 
   if (order === 4) return shell(4, "왜 차이 날까", `
-    <text x="92" y="218" font-family="Malgun Gothic" font-size="53" font-weight="900" fill="${cocoa}">월 정상가 15만원으로 다시 빼면</text>
+    <text x="92" y="218" font-family="Malgun Gothic" font-size="53" font-weight="900" fill="${cocoa}">월 정상가를 15만원으로 계산하면</text>
     <text x="92" y="270" font-family="Malgun Gothic" font-size="23" font-weight="700" fill="#9B8776">※ 업체 계산을 설명하기 위한 가상 예시입니다</text>
     <rect x="92" y="346" width="430" height="444" rx="34" fill="${pale}"/><rect x="558" y="346" width="430" height="444" rx="34" fill="#F8EFE5"/>
     <text x="132" y="418" font-family="Malgun Gothic" font-size="27" font-weight="900" fill="${sage}">실제 결제액 기준</text><text x="132" y="510" font-family="Malgun Gothic" font-size="25" font-weight="700" fill="${cocoa}">사용분 18만원</text><text x="132" y="558" font-family="Malgun Gothic" font-size="25" font-weight="700" fill="${cocoa}">위약금 7만2천원</text><text x="132" y="676" font-family="Malgun Gothic" font-size="54" font-weight="900" fill="${sage}">46만8천원</text>
     <text x="598" y="418" font-family="Malgun Gothic" font-size="27" font-weight="900" fill="#A76B3F">월 정상가 기준</text><text x="598" y="510" font-family="Malgun Gothic" font-size="25" font-weight="700" fill="${cocoa}">사용분 45만원</text><text x="598" y="558" font-family="Malgun Gothic" font-size="25" font-weight="700" fill="${cocoa}">위약금 7만2천원</text><text x="598" y="676" font-family="Malgun Gothic" font-size="54" font-weight="900" fill="#A76B3F">19만8천원</text>
-    <rect x="92" y="838" width="895" height="180" rx="32" fill="#3E5140"/><text x="540" y="910" text-anchor="middle" font-family="Malgun Gothic" font-size="26" font-weight="800" fill="#DCE7D2">같은 계약·같은 사용기간인데</text><text x="540" y="978" text-anchor="middle" font-family="Malgun Gothic" font-size="45" font-weight="900" fill="#FFFFFF">환급액 차이 27만원</text>`);
+    <rect x="92" y="838" width="895" height="180" rx="32" fill="#3E5140"/><text x="540" y="910" text-anchor="middle" font-family="Malgun Gothic" font-size="26" font-weight="800" fill="#DCE7D2">같은 계약·같은 사용기간인데</text><text x="540" y="978" text-anchor="middle" font-family="Malgun Gothic" font-size="45" font-weight="900" fill="#FFFFFF">환불금 차이 27만원</text>`);
 
-  if (order === 5) return shell(5, "증빙부터", `
-    <text x="92" y="218" font-family="Malgun Gothic" font-size="55" font-weight="900" fill="${cocoa}">계산 전에 이 4개부터 모으세요</text>
-    <text x="92" y="270" font-family="Malgun Gothic" font-size="24" font-weight="600" fill="#75675D">기억보다 계약서와 날짜가 먼저입니다</text>
-    ${["카드 영수증에 찍힌 실제 결제액","계약 시작일과 종료일","문자·메일로 해지를 알린 날짜","무료 기간·휴회를 합의한 계약서와 문자"].map((t,i)=>`<rect x="92" y="${340+i*172}" width="895" height="132" rx="28" fill="${i%2?pale:"#F8EFE5"}"/><circle cx="154" cy="${406+i*172}" r="31" fill="${i%2?sage:apricot}"/><text x="154" y="${417+i*172}" text-anchor="middle" font-family="Malgun Gothic" font-size="25" font-weight="900" fill="#fff">${i+1}</text><text x="210" y="${418+i*172}" font-family="Malgun Gothic" font-size="27" font-weight="800" fill="${cocoa}">${t}</text>`).join("")}`);
+  if (order === 5) return shell(5, "계약 전에", `
+    <text x="92" y="218" font-family="Malgun Gothic" font-size="53" font-weight="900" fill="${cocoa}">계약하기 전에 이 4가지는 확인하세요</text>
+    <text x="92" y="270" font-family="Malgun Gothic" font-size="24" font-weight="600" fill="#75675D">말로 들었다면 계약서에도 적어 달라고 하세요</text>
+    ${["중도해지 때 사용분을 어떤 금액으로 계산하는지","무료 기간도 전체 계약기간에 포함하는지","PT 횟수와 이용할 수 있는 기간","휴회·해지는 어디로, 어떻게 신청하는지"].map((t,i)=>`<rect x="92" y="${340+i*172}" width="895" height="132" rx="28" fill="${i%2?pale:"#F8EFE5"}"/><circle cx="154" cy="${406+i*172}" r="31" fill="${i%2?sage:apricot}"/><text x="154" y="${417+i*172}" text-anchor="middle" font-family="Malgun Gothic" font-size="25" font-weight="900" fill="#fff">${i+1}</text><text x="210" y="${418+i*172}" font-family="Malgun Gothic" font-size="26" font-weight="800" fill="${cocoa}">${t}</text>`).join("")}`);
 
   return shell(6, "그대로 보내기", `
-    <text x="92" y="218" font-family="Malgun Gothic" font-size="54" font-weight="900" fill="${cocoa}">“환불 얼마예요?”보다</text><text x="92" y="284" font-family="Malgun Gothic" font-size="54" font-weight="900" fill="${sage}">계산표를 요청하세요</text>
+    <text x="92" y="218" font-family="Malgun Gothic" font-size="52" font-weight="900" fill="${cocoa}">“환불금 계산 내역을</text><text x="92" y="284" font-family="Malgun Gothic" font-size="52" font-weight="900" fill="${sage}">보내주세요”라고 말하세요</text>
     <rect x="92" y="350" width="895" height="540" rx="38" fill="#F2F4ED" stroke="#AEBDA5" stroke-width="3"/>
-    ${lines("제가 실제 결제한 금액을 기준으로 사용분, 위약금, 최종 환급액을 항목별로 적어 보내주세요.", 27, 142, 458, 32, 54, 760)}
-    ${lines("각 금액에 적용한 계약 조항이나 기준도 함께 알려주세요.", 27, 142, 680, 32, 54, 760)}
+    ${lines("제가 낸 금액을 기준으로 사용한 금액, 위약금, 최종 환불금을 각각 적어서 보내주세요.", 27, 142, 458, 32, 54, 760)}
+    ${lines("사용한 금액을 계산할 때 적용한 1개월 가격과 계약 조항도 알려주세요.", 27, 142, 680, 32, 54, 760)}
     <rect x="142" y="806" width="374" height="54" rx="27" fill="${sage}"/><text x="329" y="841" text-anchor="middle" font-family="Malgun Gothic" font-size="21" font-weight="800" fill="#fff">문자·메일로 답변 남기기</text>
-    <rect x="92" y="936" width="895" height="146" rx="30" fill="#3E5140"/>${lines("계산 근거를 받지 못하거나 합의가 어렵다면 증빙을 모아 1372 소비자상담센터에 상담할 수 있습니다.", 31, 132, 996, 27, 43, 780, "#FFFFFF")}`);
+    <rect x="92" y="936" width="895" height="146" rx="30" fill="#3E5140"/>${lines("계산 근거를 받지 못하거나 합의가 어렵다면 계약서와 결제 내역을 준비해 1372에 상담할 수 있습니다.", 31, 132, 996, 27, 43, 780, "#FFFFFF")}`);
 }
 
 const poses = ["07-calculator.png", "05-thinking.png", "07-calculator.png", "02-confused.png", "05-thinking.png", "09-greeting.png"];
