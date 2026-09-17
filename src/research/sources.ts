@@ -141,6 +141,27 @@ export async function probeThreadsKeywordSearch(
   if (!config.sources.threads) return { source: "threads", status: "skipped", collected: 0, message: "Threads 수집 설정이 꺼져 있음" };
   if (!env.THREADS_ACCESS_TOKEN) return { source: "threads", status: "failed", collected: 0, message: "THREADS_ACCESS_TOKEN 없음" };
   try {
+    // Threads does not expose /me/permissions. Its supported token debugger can
+    // inspect a user token when that same token is supplied as the bearer.
+    const debugUrl = new URL("https://graph.threads.net/debug_token");
+    debugUrl.searchParams.set("input_token", env.THREADS_ACCESS_TOKEN);
+    const debugPayload = await fetchJson<{
+      data?: { is_valid?: boolean; scopes?: string[] };
+    }>(debugUrl.toString(), {
+      headers: { Authorization: `Bearer ${env.THREADS_ACCESS_TOKEN}` }
+    }, fetcher);
+    const scopes = debugPayload.data?.scopes ?? [];
+    if (debugPayload.data?.is_valid === false) {
+      return { source: "threads", status: "failed", collected: 0, message: "Threads 토큰이 유효하지 않습니다." };
+    }
+    if (!scopes.includes("threads_keyword_search")) {
+      return {
+        source: "threads",
+        status: "failed",
+        collected: 0,
+        message: `현재 토큰의 실제 권한에 threads_keyword_search가 없습니다. 앱 화면의 '테스트 준비 완료'와 토큰 동의는 별개입니다. 현재 권한: ${scopes.join(", ") || "없음"}`
+      };
+    }
     const probeConfig: ResearchConfig = {
       ...config,
       queries: [config.queries[0] || "생활비 절약"],
