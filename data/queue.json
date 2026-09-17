@@ -107,5 +107,30 @@
       "public/generated/briefs/gym-refund-real-price-v1/06.png"
     ],
     "imagePath": "public/generated/briefs/gym-refund-real-price-v1/01.png"
+  },
+  {
+    "id": "brief-moving-quote-hidden-cost-v1",
+    "briefId": "moving-quote-hidden-cost-v1",
+    "pillar": "info",
+    "scheduledAt": "2026-09-18T08:10:00+09:00",
+    "status": "draft",
+    "hook": "32만원 견적이 당일 49만원이 되는 이유",
+    "body": "소형 이사는 전화나 메시지로 짐을 설명하고 견적을 받는 경우가 많습니다. 문제는 업체가 말한 첫 금액과 실제 작업 조건이 다를 때 생깁니다. 한국소비자원이 공개한 사례에는 85만원에 계약했다가 이사 당일 짐이 많다는 이유로 50만원을 더 요구받은 경우도 있습니다. 견적을 비교할 때는 사다리차·엘리베이터, 작업 인원, 가전·가구 분해 설치, 주차 거리와 대기 시간, 폐기물 운반 비용이 포함인지 확인하세요. 방문 견적이 어렵다면 큰 가구와 가전의 사진과 가로·세로 크기, 박스 예상 개수, 양쪽 집의 층과 엘리베이터, 주차 위치, 버릴 짐을 같은 목록으로 만들어 모든 업체에 보내는 편이 좋습니다. 예약금을 보내기 전에는 ‘보내드린 목록과 작업 조건을 기준으로 추가비까지 포함한 최종 금액을 알려주세요. 별도 비용이 생기는 경우와 금액도 적어주세요’라고 글로 확인하세요. ※ 카드의 32만원·49만원·39만원은 비교 구조를 설명하기 위한 가상 금액입니다.",
+    "cta": "이사 견적에서 나중에 별도라고 들었던 비용이 있었나요? 어떤 항목이었는지 알려주세요.",
+    "text": "32만원 견적이 당일 49만원이 되는 이유\n\n소형 이사는 전화나 메시지로 짐을 설명하고 견적을 받는 경우가 많습니다. 문제는 업체가 말한 첫 금액과 실제 작업 조건이 다를 때 생깁니다. 한국소비자원이 공개한 사례에는 85만원에 계약했다가 이사 당일 짐이 많다는 이유로 50만원을 더 요구받은 경우도 있습니다. 견적을 비교할 때는 사다리차·엘리베이터, 작업 인원, 가전·가구 분해 설치, 주차 거리와 대기 시간, 폐기물 운반 비용이 포함인지 확인하세요. 방문 견적이 어렵다면 큰 가구와 가전의 사진과 가로·세로 크기, 박스 예상 개수, 양쪽 집의 층과 엘리베이터, 주차 위치, 버릴 짐을 같은 목록으로 만들어 모든 업체에 보내는 편이 좋습니다. 예약금을 보내기 전에는 ‘보내드린 목록과 작업 조건을 기준으로 추가비까지 포함한 최종 금액을 알려주세요. 별도 비용이 생기는 경우와 금액도 적어주세요’라고 글로 확인하세요. ※ 카드의 32만원·49만원·39만원은 비교 구조를 설명하기 위한 가상 금액입니다.\n\n이사 견적에서 나중에 별도라고 들었던 비용이 있었나요? 어떤 항목이었는지 알려주세요.\n\n#모하프 #하프하프 #생활비절약",
+    "template": "editorial-carousel-v1",
+    "requiresApproval": true,
+    "attempts": 0,
+    "createdAt": "2026-09-17T06:44:38.588Z",
+    "updatedAt": "2026-09-17T06:46:20.722Z",
+    "imagePaths": [
+      "public/generated/briefs/moving-quote-hidden-cost-v1/01.png",
+      "public/generated/briefs/moving-quote-hidden-cost-v1/02.png",
+      "public/generated/briefs/moving-quote-hidden-cost-v1/03.png",
+      "public/generated/briefs/moving-quote-hidden-cost-v1/04.png",
+      "public/generated/briefs/moving-quote-hidden-cost-v1/05.png",
+      "public/generated/briefs/moving-quote-hidden-cost-v1/06.png"
+    ],
+    "imagePath": "public/generated/briefs/moving-quote-hidden-cost-v1/01.png"
   }
 ]

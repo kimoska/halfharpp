@@ -117,6 +117,22 @@
     "verification": "supported"
   },
   {
+    "id": "moving-extra-cost-kca-2026",
+    "source": "official",
+    "query": "소형 이사 추가 비용 방문 견적",
+    "title": "방문 견적 없는 소규모 이사 계약, 추가 비용 요구 등 피해 많아",
+    "excerpt": "소규모 이사 피해구제 신청 중 추가비용 요구가 24.9%였고, 방문 견적 없는 비대면 계약에서 짐의 양과 작업 조건을 둘러싼 분쟁이 발생했다.",
+    "url": "https://www.kca.go.kr/home/sub.do?menukey=4005&mode=view&no=1004458186&page=1",
+    "canonicalUrl": "https://www.kca.go.kr/home/sub.do?menukey=4005&mode=view&no=1004458186&page=1",
+    "author": "한국소비자원",
+    "publishedAt": "2026-04-27T00:00:00+09:00",
+    "discoveredAt": "2026-09-17T07:30:00.000Z",
+    "sourceTier": 1,
+    "score": 78,
+    "scoreReasons": ["최근 공식 피해 사례", "구체적인 추가비 사례", "비대면 견적 행동 지침", "출처 등급 1"],
+    "verification": "supported"
+  },
+  {
     "id": "ae31ad76e783975bc1c2",
     "source": "official",
     "query": "웨딩 견적 추가금 절약",
