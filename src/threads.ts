@@ -14,9 +14,9 @@ export class ThreadsClient {
     this.userId = process.env.THREADS_USER_ID || "me";
   }
 
-  assertConfigured(): void {
+  assertConfigured(explicitLiveApproval = false): void {
     this.assertToken();
-    if (process.env.LIVE_PUBLISH_ENABLED !== "true") throw new Error("실게시 잠금 상태입니다. LIVE_PUBLISH_ENABLED=true가 필요합니다.");
+    if (!explicitLiveApproval && process.env.LIVE_PUBLISH_ENABLED !== "true") throw new Error("실게시 잠금 상태입니다. LIVE_PUBLISH_ENABLED=true 또는 명시적인 --live 승인이 필요합니다.");
   }
 
   private assertToken(): void {
@@ -48,8 +48,8 @@ export class ThreadsClient {
     if (!result.success) throw new Error("Threads 게시물 삭제 응답을 확인하지 못했습니다.");
   }
 
-  async publish(post: QueuePost, automation: AutomationConfig): Promise<ApiResult> {
-    this.assertConfigured();
+  async publish(post: QueuePost, automation: AutomationConfig, explicitLiveApproval = false): Promise<ApiResult> {
+    this.assertConfigured(explicitLiveApproval);
     if ((post.publicImageUrls?.length ?? 0) > 1) return this.publishCarousel(post, automation);
     const create = new URLSearchParams({ text: post.text, reply_control: automation.defaultReplyControl });
     const singleImage = post.publicImageUrl ?? post.publicImageUrls?.[0];

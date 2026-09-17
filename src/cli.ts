@@ -154,8 +154,9 @@ async function deletePublished(id: string | undefined): Promise<void> {
 
 async function run(args: string[]): Promise<void> {
   const allDue = args.includes("--all-due");
+  const liveRequested = args.includes("--live");
   const [brand, automation, queue] = await Promise.all([loadBrand(), loadAutomation(), loadQueue()]);
-  const dryRun = args.includes("--dry-run") || automation.dryRunByDefault || process.env.LIVE_PUBLISH_ENABLED !== "true";
+  const dryRun = args.includes("--dry-run") || (!liveRequested && (automation.dryRunByDefault || process.env.LIVE_PUBLISH_ENABLED !== "true"));
   const now = new Date();
   const candidates = queue.filter((post) => ["approved", "rendered"].includes(post.status) && (allDue || Date.parse(post.scheduledAt) <= now.getTime()));
   const selected = automation.publishOnePerRun ? candidates.slice(0, 1) : candidates;
@@ -193,7 +194,7 @@ async function run(args: string[]): Promise<void> {
       } else {
         post.publicImageUrl ||= await makePublic(path.resolve(post.imagePath!));
       }
-      const result = await client.publish(post, automation);
+      const result = await client.publish(post, automation, liveRequested);
       post.status = "published";
       post.threadsPostId = result.id;
       post.permalink = result.permalink;
@@ -523,7 +524,7 @@ async function initSecrets(): Promise<void> {
 }
 
 function help(): void {
-  console.log(`모하프 Threads 자동화\n\n명령:\n  init-secrets\n  research-doctor\n  research-collect\n  research-cycle\n  research-import --url <주소> --title <제목> [--excerpt <요약>] [--tier 1|2]\n  research-ingest <기획안.json>\n  research-plan [--leads 10]\n  research-render [기획안ID]\n  research-queue <기획안ID> [--at ISO시각]\n  research-validate\n  research-report\n  toss-doctor\n  toss-sync\n  validate\n  doctor\n  seed --days 30 --legacy\n  reseed --days 30 --legacy\n  sync-products\n  ai-enrich --limit 10\n  render [--all]\n  extract-poses\n  approve <게시물ID>\n  delete-published <게시물ID>\n  test-upload <게시물ID>\n  run [--dry-run] [--all-due]\n  insights\n  report`);
+  console.log(`모하프 Threads 자동화\n\n명령:\n  init-secrets\n  research-doctor\n  research-collect\n  research-cycle\n  research-import --url <주소> --title <제목> [--excerpt <요약>] [--tier 1|2]\n  research-ingest <기획안.json>\n  research-plan [--leads 10]\n  research-render [기획안ID]\n  research-queue <기획안ID> [--at ISO시각]\n  research-validate\n  research-report\n  toss-doctor\n  toss-sync\n  validate\n  doctor\n  seed --days 30 --legacy\n  reseed --days 30 --legacy\n  sync-products\n  ai-enrich --limit 10\n  render [--all]\n  extract-poses\n  approve <게시물ID>\n  delete-published <게시물ID>\n  test-upload <게시물ID>\n  run [--dry-run | --live] [--all-due]\n  insights\n  report`);
 }
 
 async function main(): Promise<void> {

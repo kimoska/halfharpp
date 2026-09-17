@@ -113,7 +113,7 @@
     "briefId": "moving-quote-hidden-cost-v1",
     "pillar": "info",
     "scheduledAt": "2026-09-18T08:10:00+09:00",
-    "status": "draft",
+    "status": "published",
     "hook": "32만원 견적이 당일 49만원이 되는 이유",
     "body": "한국소비자원이 공개한 소규모 이사 피해 사례에는 85만원에 계약했다가 이사 당일 50만원을 더 요구받은 경우가 있습니다. 관련 피해 유형 중 추가비 요구는 24.9%였습니다.\n\n견적을 받을 때는 사다리차·엘리베이터, 작업 인원, 분해·설치, 주차 거리, 폐기 비용이 포함인지 확인하세요. 방문 견적이 어렵다면 짐 사진과 크기·개수, 양쪽 집의 층수와 주차 위치를 같은 목록으로 보내고, 추가비까지 포함한 최종 금액을 글로 받아두세요.\n\n※ 32만원·49만원·39만원은 비교를 위한 가상 금액입니다.",
     "cta": "이사 당일 별도라고 들었던 비용이 있었나요?",
@@ -122,7 +122,7 @@
     "requiresApproval": true,
     "attempts": 0,
     "createdAt": "2026-09-17T06:44:38.588Z",
-    "updatedAt": "2026-09-17T06:53:16.938Z",
+    "updatedAt": "2026-09-17T07:28:56.555Z",
     "imagePaths": [
       "public/generated/briefs/moving-quote-hidden-cost-v1/01.png",
       "public/generated/briefs/moving-quote-hidden-cost-v1/02.png",
@@ -140,6 +140,8 @@
       "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/52f93aff061f4d93-05.png",
       "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/d6d25b0119797533-06.png"
     ],
-    "publicImageUrl": "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/7073e2be3dc07fa9-01.png"
+    "publicImageUrl": "https://raw.githubusercontent.com/kimoska/halfharpp/main/moharp/generated/7073e2be3dc07fa9-01.png",
+    "threadsPostId": "17951720169038900",
+    "permalink": "https://www.threads.com/@halfharpp/post/DdYUzr4E7Ex"
   }
 ]
