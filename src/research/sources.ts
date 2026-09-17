@@ -133,6 +133,35 @@ async function collectThreads(config: ResearchConfig, env: NodeJS.ProcessEnv, fe
   return { leads, diagnostic: { source, status: "ok", collected: leads.length, message: "정상 수집" } };
 }
 
+export async function probeThreadsKeywordSearch(
+  config: ResearchConfig,
+  env: NodeJS.ProcessEnv = process.env,
+  fetcher: FetchLike = fetch,
+): Promise<SourceDiagnostic> {
+  if (!config.sources.threads) return { source: "threads", status: "skipped", collected: 0, message: "Threads 수집 설정이 꺼져 있음" };
+  if (!env.THREADS_ACCESS_TOKEN) return { source: "threads", status: "failed", collected: 0, message: "THREADS_ACCESS_TOKEN 없음" };
+  try {
+    const probeConfig: ResearchConfig = {
+      ...config,
+      queries: [config.queries[0] || "생활비 절약"],
+      maxItemsPerQuery: 1
+    };
+    const result = await collectThreads(probeConfig, env, fetcher);
+    return { ...result.diagnostic, message: "threads_keyword_search 실제 호출 정상" };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const permissionFailure = /HTTP 500|permission|OAuth|code\s*10/i.test(message);
+    return {
+      source: "threads",
+      status: "failed",
+      collected: 0,
+      message: permissionFailure
+        ? `현재 토큰으로 키워드 검색이 거부됐습니다. Meta 앱에 threads_keyword_search를 추가하고 새 토큰으로 다시 동의해야 합니다. 원문: ${message}`
+        : message
+    };
+  }
+}
+
 async function collectOpenAIWeb(config: ResearchConfig, env: NodeJS.ProcessEnv, fetcher: FetchLike): Promise<CollectionResult> {
   const source: ResearchSource = "openai_web";
   const key = env.OPENAI_API_KEY;
@@ -202,7 +231,7 @@ async function safely(source: ResearchSource, task: () => Promise<CollectionResu
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const hint = source === "threads" && message.includes("HTTP 500")
-      ? " · Meta 앱의 threads_keyword_search 권한 추가 후 토큰 재동의가 필요할 수 있습니다."
+      ? " · 현재 토큰에 threads_keyword_search가 없습니다. Meta 앱 권한 추가 후 새 토큰으로 다시 동의해야 합니다."
       : "";
     return { leads: [], diagnostic: { source, status: "failed", collected: 0, message: `${message}${hint}` } };
   }

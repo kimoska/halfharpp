@@ -15,7 +15,7 @@ import type { QueuePost, ValidationIssue } from "./types.js";
 import type { EditorialBrief, ResearchLead } from "./research-types.js";
 import { paths } from "./paths.js";
 import { makeLead } from "./research/normalize.js";
-import { collectConfiguredSources } from "./research/sources.js";
+import { collectConfiguredSources, probeThreadsKeywordSearch } from "./research/sources.js";
 import { makeResearchRun, mergeAndRankLeads, validateBrief, validateLead } from "./research/pipeline.js";
 import { generateEditorialBrief } from "./research/planner.js";
 import { renderEditorialBrief } from "./research/card-renderer.js";
@@ -228,10 +228,12 @@ async function report(): Promise<void> {
 
 async function researchDoctor(): Promise<number> {
   const config = await loadResearchConfig();
+  const threadsSearch = await probeThreadsKeywordSearch(config);
   const checks = [
     { ok: Boolean(process.env.NAVER_CLIENT_ID && process.env.NAVER_CLIENT_SECRET), required: false, message: "네이버 검색 API 키(선택)" },
     { ok: Boolean(process.env.YOUTUBE_API_KEY), required: false, message: "YouTube Data API 키(선택)" },
-    { ok: Boolean(process.env.THREADS_ACCESS_TOKEN), required: false, message: "Threads 토큰 등록(검색 권한은 별도 확인)" },
+    { ok: Boolean(process.env.THREADS_ACCESS_TOKEN), required: true, message: "Threads 토큰 등록" },
+    { ok: threadsSearch.status === "ok", required: true, message: `Threads 키워드 검색 권한 · ${threadsSearch.message}` },
     { ok: config.queries.length >= 5, required: true, message: "검색어 5개 이상" },
     { ok: config.primaryDomains.length >= 5, required: true, message: "공식 근거 도메인 5개 이상" }
   ];

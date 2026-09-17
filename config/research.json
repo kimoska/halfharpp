@@ -34,7 +34,7 @@
     "naverCafe": true,
     "naverNews": true,
     "youtube": true,
-    "threads": false,
+    "threads": true,
     "openaiWebSearch": false
   }
 }
