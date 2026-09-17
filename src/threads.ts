@@ -1,6 +1,7 @@
 import type { AutomationConfig, QueuePost } from "./types.js";
 
 interface ApiResult { id: string; permalink?: string; status?: string; error_message?: string; }
+interface DeleteResult { success: boolean; }
 export interface InsightResult { data: Array<{ name: string; values?: Array<{ value: number }>; total_value?: { value: number } }>; }
 
 export class ThreadsClient {
@@ -22,10 +23,11 @@ export class ThreadsClient {
     if (!this.token) throw new Error("THREADS_ACCESS_TOKEN이 없습니다.");
   }
 
-  private async request<T = ApiResult>(pathname: string, method: "GET" | "POST", params: URLSearchParams): Promise<T> {
+  private async request<T = ApiResult>(pathname: string, method: "GET" | "POST" | "DELETE", params: URLSearchParams): Promise<T> {
     params.set("access_token", this.token);
     const url = `${this.base}/${pathname.replace(/^\//, "")}`;
-    const response = await fetch(method === "GET" ? `${url}?${params}` : url, {
+    const queryMethod = method === "GET" || method === "DELETE";
+    const response = await fetch(queryMethod ? `${url}?${params}` : url, {
       method,
       headers: method === "POST" ? { "Content-Type": "application/x-www-form-urlencoded" } : undefined,
       body: method === "POST" ? params : undefined
@@ -38,6 +40,12 @@ export class ThreadsClient {
   async getPostInsights(postId: string): Promise<InsightResult> {
     this.assertToken();
     return this.request<InsightResult>(`${postId}/insights`, "GET", new URLSearchParams({ metric: "views,likes,replies,reposts,quotes,shares" }));
+  }
+
+  async deletePost(postId: string): Promise<void> {
+    this.assertToken();
+    const result = await this.request<DeleteResult>(postId, "DELETE", new URLSearchParams());
+    if (!result.success) throw new Error("Threads 게시물 삭제 응답을 확인하지 못했습니다.");
   }
 
   async publish(post: QueuePost, automation: AutomationConfig): Promise<ApiResult> {

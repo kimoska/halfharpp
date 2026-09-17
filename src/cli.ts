@@ -137,6 +137,21 @@ async function approve(id: string | undefined): Promise<void> {
   console.log(`✓ 승인: ${id}`);
 }
 
+async function deletePublished(id: string | undefined): Promise<void> {
+  if (!id) throw new Error("삭제할 게시물 ID가 필요합니다.");
+  const queue = await loadQueue();
+  const post = queue.find((item) => item.id === id);
+  if (!post) throw new Error(`게시물을 찾지 못했습니다: ${id}`);
+  if (post.status !== "published" || !post.threadsPostId) throw new Error("공개 완료된 Threads 게시물만 삭제할 수 있습니다.");
+  await new ThreadsClient().deletePost(post.threadsPostId);
+  post.status = "deleted";
+  post.deletedAt = new Date().toISOString();
+  post.updatedAt = post.deletedAt;
+  await saveQueue(queue);
+  await appendLog({ event: "deleted", postId: post.id, threadsPostId: post.threadsPostId, permalink: post.permalink });
+  console.log(`✓ Threads 게시물 삭제 완료: ${post.permalink ?? post.threadsPostId}`);
+}
+
 async function run(args: string[]): Promise<void> {
   const allDue = args.includes("--all-due");
   const [brand, automation, queue] = await Promise.all([loadBrand(), loadAutomation(), loadQueue()]);
@@ -205,7 +220,7 @@ async function report(): Promise<void> {
     return groups;
   }, {});
   console.log("하프하프 모하프 자동화 현황");
-  for (const key of ["draft", "approved", "rendered", "published", "failed", "skipped"] as const) console.log(`- ${key}: ${counts[key]?.length ?? 0}`);
+  for (const key of ["draft", "approved", "rendered", "published", "deleted", "failed", "skipped"] as const) console.log(`- ${key}: ${counts[key]?.length ?? 0}`);
   const next = queue.find((post) => ["approved", "rendered"].includes(post.status));
   if (next) console.log(`다음 게시: ${next.scheduledAt} / ${next.id} / ${next.pillar}`);
 }
@@ -508,7 +523,7 @@ async function initSecrets(): Promise<void> {
 }
 
 function help(): void {
-  console.log(`모하프 Threads 자동화\n\n명령:\n  init-secrets\n  research-doctor\n  research-collect\n  research-cycle\n  research-import --url <주소> --title <제목> [--excerpt <요약>] [--tier 1|2]\n  research-ingest <기획안.json>\n  research-plan [--leads 10]\n  research-render [기획안ID]\n  research-queue <기획안ID> [--at ISO시각]\n  research-validate\n  research-report\n  toss-doctor\n  toss-sync\n  validate\n  doctor\n  seed --days 30 --legacy\n  reseed --days 30 --legacy\n  sync-products\n  ai-enrich --limit 10\n  render [--all]\n  extract-poses\n  approve <게시물ID>\n  test-upload <게시물ID>\n  run [--dry-run] [--all-due]\n  insights\n  report`);
+  console.log(`모하프 Threads 자동화\n\n명령:\n  init-secrets\n  research-doctor\n  research-collect\n  research-cycle\n  research-import --url <주소> --title <제목> [--excerpt <요약>] [--tier 1|2]\n  research-ingest <기획안.json>\n  research-plan [--leads 10]\n  research-render [기획안ID]\n  research-queue <기획안ID> [--at ISO시각]\n  research-validate\n  research-report\n  toss-doctor\n  toss-sync\n  validate\n  doctor\n  seed --days 30 --legacy\n  reseed --days 30 --legacy\n  sync-products\n  ai-enrich --limit 10\n  render [--all]\n  extract-poses\n  approve <게시물ID>\n  delete-published <게시물ID>\n  test-upload <게시물ID>\n  run [--dry-run] [--all-due]\n  insights\n  report`);
 }
 
 async function main(): Promise<void> {
@@ -537,6 +552,7 @@ async function main(): Promise<void> {
     case "render": await render(args); break;
     case "extract-poses": await extractPosePack(); break;
     case "approve": await approve(args[0]); break;
+    case "delete-published": await deletePublished(args[0]); break;
     case "test-upload": await testUpload(args[0]); break;
     case "run": await run(args); break;
     case "insights": await insights(); break;

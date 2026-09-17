@@ -1,5 +1,5 @@
 export type Pillar = "info" | "relatable" | "community" | "affiliate";
-export type PostStatus = "draft" | "approved" | "rendered" | "published" | "failed" | "skipped";
+export type PostStatus = "draft" | "approved" | "rendered" | "published" | "deleted" | "failed" | "skipped";
 
 export interface BrandConfig {
   name: string;
@@ -71,6 +71,7 @@ export interface QueuePost {
   briefId?: string;
   threadsPostId?: string;
   permalink?: string;
+  deletedAt?: string;
   attempts: number;
   lastError?: string;
   createdAt: string;
